@@ -1,4 +1,5 @@
 from classes.player import Player
+from classes.user import User
 from classes.World.Room import Room
 VICTORY_LEVEL = 6
 
@@ -12,6 +13,82 @@ ROOM_FUNCTIONS = {
     "dead_end": Room.treasure_room
 }
 
+# print methods
+def print_login_screen():
+    print("                            ")
+    print("+--------------------------+")
+    print("| WELCOME TO CAVE CRAWLER! |")
+    print("+--------------------------+")
+    print("| Options:                 |")
+    print("| 1. New Game              |")
+    print("| 2. Load Game             |")
+    print("| x: Exit Game             |")
+    print("+--------------------------+")
+    print("                            ")
+
+
+def print_new_game_header():
+    print("                            ")
+    print("+--------------------------+")
+    print("|         NEW GAME         |")
+    print("+--------------------------+")
+    print("                            ")
+
+
+def print_load_game_header():
+    print("                            ")
+    print("+--------------------------+")
+    print("|         LOAD GAME        |")
+    print("+--------------------------+")
+    print("                            ")
+
+
+# menus
+def view_new_game_menu():
+    print_new_game_header()
+    print("Create an account:")
+
+    # put some checks on these
+    username = input("\nUsername: ")
+    password = input("Password: ")
+
+    User(username, password)
+
+    deciding = True
+
+    while deciding:
+        decision = input("\nCreate account? [y/n]: ")
+        decision.lower()
+
+        if decision == "y":
+            print(f"\nWelcome, {username.upper()}!")
+            print(f"\nHigh Score: 0")
+            print("\nBeginning your adventure...")
+            mainGame()
+            deciding = False
+        elif decision == "n":
+            print("\nAccount creation canceled.")
+            print("Returning to login screen...")
+            deciding = False
+        else:
+            print("\nNot a valid input!")
+
+
+def view_load_game_menu():
+    print_load_game_header()
+    print("Enter your account details:")
+
+    # has to match info from database
+    username = input("\nUsername: ")
+    password = input("Password: ")
+
+    # if it does match
+    print(f"\nWelcome back, {username.upper()}!")
+    print(f"\nHigh Score: {high_score}")
+    print("\nBeginning your adventure...")
+    mainGame()
+
+
 
 def mainGame():
     game_looping = True
@@ -19,6 +96,7 @@ def mainGame():
     player = Player()
     current_room = Room.create_starting_room()
     while game_looping:
+
     
         ##### DEBUGGING
         print(f"player.health: {player.health}")
@@ -37,35 +115,20 @@ def mainGame():
         else:
             current_room = current_room.enter_room(new_outcome)
             
-# MAIN MENU
-print(f"""
-        WELCOME TO CAVE CRAWLER!
-        High Score: {high_score}
-        To begin, press 'x'
-        To exit, enter 'quit'
-          """)
+
 while looping:
-    choice = input("Begin your adventure? ")
-    if choice == "x":
-        (final_outcome, highest_level_reached) = mainGame()
-        print("""
-------------------------------------------------------------
-              """)
-        if final_outcome == "victory":
-            print("Congratulations! You Did it!")
-        elif final_outcome == "defeat":
-            print("Thank you for playing!")
-            print(f"You made it to level {highest_level_reached}")
-        high_score = max(highest_level_reached, high_score)
+    print_login_screen()
+    choice = input("Input your choice: ")
+    choice = choice.lower()
 
-        print(f"""
-        High Score: {high_score}
-        To begin again, press 'x'
-        To exit, enter 'quit'     
-              """)
-
-    elif choice == "quit":
+    if choice == "1":
+        view_new_game_menu()
+    elif choice == "2":
+        view_load_game_menu()
+    elif choice == "x":
         looping = False
+        print("Exiting game...")
     else:
         print("Not a valid input!")
-    
+
+        
