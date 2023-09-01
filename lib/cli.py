@@ -1,4 +1,5 @@
 from classes.player import Player
+from classes.user import User
 
 
 # print methods
@@ -35,14 +36,12 @@ def print_load_game_header():
 def view_new_game_menu():
     print_new_game_header()
     print("Create an account:")
-    # print("\nUsername must be between 3 and 20 characters.")
-    username = input("\nUsername: ")
 
-    # print("\nPassword must be between 3 and 20 characters.")
+    # put some checks on these
+    username = input("\nUsername: ")
     password = input("Password: ")
 
-    # create account class?
-    # account = Account(username, password)
+    User(username, password)
 
     deciding = True
 
@@ -51,8 +50,8 @@ def view_new_game_menu():
         decision.lower()
 
         if decision == "y":
-            # account.save()
             print(f"\nWelcome, {username.upper()}!")
+            print(f"\nHigh Score: 0")
             print("\nBeginning your adventure...")
             mainGame()
             deciding = False
