@@ -1,6 +1,6 @@
 import sqlite3
 
-CONN = sqlite3.connect("../lib/db/cave_crawler.db")
+CONN = sqlite3.connect("./lib/db/cave_crawler.db")
 CURSOR = CONN.cursor()
 
 
@@ -36,3 +36,19 @@ class User:
             sql, (self.username, self.password, self.high_score, self.times_played, self.times_won)
         )
         CONN.commit()
+
+    @classmethod
+    def match_username(cls, username_input):
+        sql = f"SELECT * FROM users WHERE username = '{username_input}'"
+        count = CURSOR.execute(sql).fetchone()
+
+        if count is None:
+            print("Username not found. Please try again.")
+
+    @classmethod
+    def match_password(cls, password_input):
+        pass
+
+    @classmethod
+    def on_successful_login(cls, username_input, password_input):
+        pass

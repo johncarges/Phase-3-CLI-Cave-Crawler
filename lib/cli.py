@@ -37,7 +37,7 @@ def view_new_game_menu():
     print_new_game_header()
     print("Create an account:")
 
-    # put some checks on these
+    # TODO: put some checks on these
     username = input("\nUsername: ")
     password = input("Password: ")
 
@@ -69,6 +69,8 @@ def view_load_game_menu():
 
     # has to match info from database
     username = input("\nUsername: ")
+    User.match_username(username)
+
     password = input("Password: ")
 
     # if it does match
