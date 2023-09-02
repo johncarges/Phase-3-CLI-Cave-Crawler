@@ -43,12 +43,27 @@ class User:
         count = CURSOR.execute(sql).fetchone()
 
         if count is None:
-            print("Username not found. Please try again.")
+            print("\nUsername not found. Please try again.")
+            username = input("\nUsername: ")
+            return cls.match_username(username)
+        else:
+            return username_input
 
     @classmethod
     def match_password(cls, password_input):
-        pass
+        sql = f"SELECT * FROM users WHERE password = '{password_input}'"
+        count = CURSOR.execute(sql).fetchone()
+
+        if count is None:
+            print("\nPassword not found. Please try again.")
+            password = input("\nPassword: ")
+            return cls.match_password(password)
+        else:
+            return password_input
 
     @classmethod
-    def on_successful_login(cls, username_input, password_input):
-        pass
+    def on_successful_login(cls, username):
+        sql = f"SELECT * FROM users WHERE username = '{username}'"
+        account_info = CURSOR.execute(sql).fetchone()
+
+        return account_info
