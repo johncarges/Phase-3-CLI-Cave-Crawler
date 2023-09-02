@@ -1,6 +1,17 @@
 from classes.player import Player
 from classes.user import User
+from classes.World.Room import Room
+VICTORY_LEVEL = 6
 
+looping = True
+high_score = 0
+
+ROOM_FUNCTIONS = {
+    "start": Room.starting_room,
+    "fork": Room.fork_room,
+    "enemy": Room.enemy_encounter,
+    "dead_end": Room.treasure_room
+}
 
 # print methods
 def print_login_screen():
@@ -112,47 +123,29 @@ def view_load_game_menu():
 def mainGame(high_score):
     player = Player()
     high_score = high_score
-
     game_looping = True
-    current_level = 0
     highest_level_reached = 0
-    outcome = "defeat"
-
+    player = Player()
+    current_room = Room.create_starting_room()
     while game_looping:
-        print(
-            """
------------------------------------------------------------------------------
-        You find yourself in a large, dark cave.
-        Ahead of you you see a tunnel branching off to the left, and one to the right.
-        Which do you choose?
-        (1) Left
-        (2) Right
-        (3) Stay here
-        (x) Exit to main menu
-                """
-        )
-        choice = input("Enter your choice: (1, 2, 3, or x): ")
-        if choice in ("1", "2"):
-            current_level += 1
-            highest_level_reached = max(highest_level_reached, current_level)
-            if current_level == 5:
-                print("VICTORY! YOU'VE MADE IT OUT!")
-                game_looping = False
-                outcome = "victory"
-        elif choice == "3":
-            pass
-        elif choice == "x":
-            print("Thank you for playing!")
-            print(f"You made it to level {highest_level_reached}")
-            game_looping = False
+    
+        ##### DEBUGGING
+        print(f"player.health: {player.health}")
+        print(f"player.attack: {player.attack}")
+        print(f"current_room: {current_room}")
+        print(f"current_level: {current_room.level}")
+        #####
+        
+        if current_room.level == VICTORY_LEVEL:
+            return ("victory", VICTORY_LEVEL)
+        
+        new_outcome = ROOM_FUNCTIONS[current_room.type](player) # return previous, exit, left, straight, right
+        print(f"new_outcome: {new_outcome}")
+        if new_outcome == "exit":
+            return ("Failure", highest_level_reached)
         else:
-            print("Not a valid input!")
-
-    return (outcome, highest_level_reached)
-
-
-# main method code
-looping = True
+            current_room = current_room.enter_room(new_outcome)
+            
 
 while looping:
     print_login_screen()
@@ -168,3 +161,5 @@ while looping:
         print("Exiting game...")
     else:
         print("Not a valid input!")
+
+        
