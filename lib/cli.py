@@ -1,6 +1,7 @@
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
+
 VICTORY_LEVEL = 6
 
 looping = True
@@ -10,8 +11,9 @@ ROOM_FUNCTIONS = {
     "start": Room.starting_room,
     "fork": Room.fork_room,
     "enemy": Room.enemy_encounter,
-    "dead_end": Room.treasure_room
+    "dead_end": Room.treasure_room,
 }
+
 
 # print methods
 def print_login_screen():
@@ -20,25 +22,25 @@ def print_login_screen():
     print("| WELCOME TO CAVE CRAWLER! |")
     print("+--------------------------+")
     print("| Options:                 |")
-    print("| 1. New Game              |")
-    print("| 2. Load Game             |")
+    print("| 1. Sign Up               |")
+    print("| 2. Login In              |")
     print("| x: Exit Game             |")
     print("+--------------------------+")
     print("                            ")
 
 
-def print_new_game_header():
+def print_sign_up_header():
     print("                            ")
     print("+--------------------------+")
-    print("|         NEW GAME         |")
+    print("|         SIGN  UP         |")
     print("+--------------------------+")
     print("                            ")
 
 
-def print_load_game_header():
+def print_log_in_header():
     print("                            ")
     print("+--------------------------+")
-    print("|         LOAD GAME        |")
+    print("|          LOG  IN         |")
     print("+--------------------------+")
     print("                            ")
 
@@ -52,8 +54,8 @@ def print_login_success_menu():
 
 
 # menus
-def view_new_game_menu():
-    print_new_game_header()
+def view_sign_up_menu():
+    print_sign_up_header()
     print("Create an account:")
     print("Username and password must be strings between 2 and 20 characters.")
 
@@ -87,8 +89,8 @@ def view_new_game_menu():
             print("\nNot a valid input!")
 
 
-def view_load_game_menu():
-    print_load_game_header()
+def view_log_in_menu():
+    print_log_in_header()
     print("Enter your account details:")
 
     username_input = input("\nUsername: ")
@@ -114,7 +116,7 @@ def view_load_game_menu():
     if ready == "y":
         print("\nBeginning your adventure...")
         mainGame(account_info[3])
-    elif ready == "no":
+    elif ready == "n":
         print("\nReturning to main menu...")
     else:
         print("\nNot a valid input!")
@@ -128,24 +130,25 @@ def mainGame(high_score):
     player = Player()
     current_room = Room.create_starting_room()
     while game_looping:
-    
         ##### DEBUGGING
         print(f"player.health: {player.health}")
         print(f"player.attack: {player.attack}")
         print(f"current_room: {current_room}")
         print(f"current_level: {current_room.level}")
         #####
-        
+
         if current_room.level == VICTORY_LEVEL:
             return ("victory", VICTORY_LEVEL)
-        
-        new_outcome = ROOM_FUNCTIONS[current_room.type](player) # return previous, exit, left, straight, right
+
+        new_outcome = ROOM_FUNCTIONS[current_room.type](
+            player
+        )  # return previous, exit, left, straight, right
         print(f"new_outcome: {new_outcome}")
         if new_outcome == "exit":
             return ("Failure", highest_level_reached)
         else:
             current_room = current_room.enter_room(new_outcome)
-            
+
 
 while looping:
     print_login_screen()
@@ -153,13 +156,11 @@ while looping:
     choice = choice.lower()
 
     if choice == "1":
-        view_new_game_menu()
+        view_sign_up_menu()
     elif choice == "2":
-        view_load_game_menu()
+        view_log_in_menu()
     elif choice == "x":
         looping = False
         print("Exiting game...")
     else:
         print("Not a valid input!")
-
-        
