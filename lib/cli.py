@@ -44,20 +44,25 @@ def print_login_success_menu():
 def view_new_game_menu():
     print_new_game_header()
     print("Create an account:")
+    print("Username and password must be strings between 2 and 20 characters.")
 
-    # TODO: put some checks on these
-    username = input("\nUsername: ")
-    password = input("Password: ")
+    username_input = input("\nUsername: ")
+    username = User.check_new_username(username_input)
 
-    User(username, password)
+    password_input = input("Password: ")
+    password = User.check_new_password(password_input)
 
     deciding = True
 
     while deciding:
+        print("\nPlease review your account details:")
+        print(f"\nUsername: {username}")
+        print(f"Password: {password}")
         decision = input("\nCreate account? [y/n]: ")
         decision.lower()
 
         if decision == "y":
+            User(username, password)
             print(f"\nWelcome, {username.upper()}!")
             print(f"\nHigh Score: 0")
             print("\nBeginning your adventure...")
