@@ -53,6 +53,19 @@ def print_login_success_menu():
     print("                            ")
 
 
+def print_game_over_menu():
+    print("                            ")
+    print("+--------------------------+")
+    print("|        GAME  OVER        |")
+    print("+--------------------------+")
+    print("| Options:                 |")
+    print("| 1. Play Again            |")
+    print("| 2. Exit to Main Menu     |")
+    print("| x: Exit Game             |")
+    print("+--------------------------+")
+    print("                            ")
+
+
 # menus
 def view_sign_up_menu():
     print_sign_up_header()
@@ -122,13 +135,40 @@ def view_log_in_menu():
         print("\nNot a valid input!")
 
 
+# integrate this in once player reaches victory/defeat
+def view_after_game_menu():
+    print_game_over_menu()
+
+    deciding = True
+
+    while deciding:
+        choice = input("Input your choice: ")
+        choice = choice.lower()
+
+        if choice == "1":
+            print("\nBeginning your adventure...")
+            # send back to main game with newest high score
+            deciding = False
+        elif choice == "2":
+            print("\nReturning to main menu...")
+            # send back to main menu
+            deciding = False
+        elif choice == "x":
+            print("Exiting game...")
+            # quit the game completely
+            deciding = False
+        else:
+            print("Not a valid input!")
+
+
 def mainGame(high_score):
     player = Player()
     high_score = high_score
-    game_looping = True
     highest_level_reached = 0
-    player = Player()
+
+    game_looping = True
     current_room = Room.create_starting_room()
+
     while game_looping:
         ##### DEBUGGING
         print(f"player.health: {player.health}")
