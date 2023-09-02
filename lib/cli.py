@@ -53,15 +53,23 @@ def print_login_success_menu():
     print("                            ")
 
 
-def print_game_over_menu():
+def print_game_over_header():
     print("                            ")
     print("+--------------------------+")
     print("|        GAME  OVER        |")
     print("+--------------------------+")
     print("| Options:                 |")
     print("| 1. Play Again            |")
-    print("| 2. Exit to Main Menu     |")
+    print("| 2. Account Details       |")
     print("| x: Exit Game             |")
+    print("+--------------------------+")
+    print("                            ")
+
+
+def print_account_details_menu():
+    print("                            ")
+    print("+--------------------------+")
+    print("|     ACCOUNT DETAILS      |")
     print("+--------------------------+")
     print("                            ")
 
@@ -123,22 +131,30 @@ def view_log_in_menu():
     print(f"Times Played: {account_info[4]}")
     print(f"Times Won: {account_info[5]}")
 
-    ready = input("\nReady to begin? [y/n]: ")
-    ready.lower()
+    deciding = True
 
-    if ready == "y":
-        print("\nBeginning your adventure...")
-        mainGame(account_info[3])
-    elif ready == "n":
-        print("\nReturning to main menu...")
-    else:
-        print("\nNot a valid input!")
+    while deciding:
+        print("\nInput 'begin' to start your adventure.")
+        print("Input 'details' to see your account details.")
+
+        ready = input("\nInput your choice: ")
+        ready.lower()
+
+        if ready == "begin":
+            print("\nBeginning your adventure...")
+            mainGame(account_info[3])
+            deciding = False
+        elif ready == "details":
+            print("\nLoading account details...")
+            view_account_details_menu(account_info)
+            deciding = False
+        else:
+            print("\nNot a valid input!")
 
 
-# integrate this in once player reaches victory/defeat
-def view_after_game_menu():
-    print_game_over_menu()
-
+# display once player reaches victory/defeat
+def view_game_over_menu():
+    print_game_over_header()
     deciding = True
 
     while deciding:
@@ -150,8 +166,8 @@ def view_after_game_menu():
             # send back to main game with newest high score
             deciding = False
         elif choice == "2":
-            print("\nReturning to main menu...")
-            # send back to main menu
+            print("\nLoading account details...")
+            # update account info BEFORE getting to account details menu
             deciding = False
         elif choice == "x":
             print("Exiting game...")
@@ -159,6 +175,35 @@ def view_after_game_menu():
             deciding = False
         else:
             print("Not a valid input!")
+
+
+def view_account_details_menu(account_info):
+    print_account_details_menu()
+
+    # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won
+    print(f"High Score: {account_info[3]}")
+    print(f"Times Played: {account_info[4]}")
+    print(f"Times Won: {account_info[5]}")
+
+    deciding = True
+
+    while deciding:
+        print("\nInput 'begin' to start your adventure.")
+        # print("Input 'enemies' to see your enemy encounters.")
+        print("Input 'exit' to log out.")
+
+        ready = input("\nInput your choice: ")
+        ready.lower()
+
+        if ready == "begin":
+            print("\nBeginning your adventure...")
+            mainGame(account_info[3])
+            deciding = False
+        elif ready == "exit":
+            print("\nReturning to login screen...")
+            deciding = False
+        else:
+            print("\nNot a valid input!")
 
 
 def mainGame(high_score):
