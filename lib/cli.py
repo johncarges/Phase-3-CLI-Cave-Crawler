@@ -99,10 +99,12 @@ def mainGame():
 
     
         ##### DEBUGGING
-        print(f"player.health: {player.health}")
-        print(f"player.attack: {player.attack}")
-        print(f"current_room: {current_room}")
-        print(f"current_level: {current_room.level}")
+        if True:
+            print(f"player.health: {player.health}")
+            print(f"player.attack: {player.attack}")
+            print(f"current_room: {current_room}")
+            print(f"current_level: {current_room.level}")
+            print(f"open_paths: {Room.open_paths}")
         #####
         
         if current_room.level == VICTORY_LEVEL:

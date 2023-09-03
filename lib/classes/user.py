@@ -1,6 +1,6 @@
 import sqlite3
 
-CONN = sqlite3.connect("../lib/db/cave_crawler.db")
+CONN = sqlite3.connect("./lib/db/cave_crawler.db")
 CURSOR = CONN.cursor()
 
 

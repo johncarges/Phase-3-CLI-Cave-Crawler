@@ -1,8 +1,11 @@
 from random import randint
 
+
 class Room:
 
     ROOM_TYPES = ["start", "fork", "enemy", "dead_end"]
+
+    open_paths = 3
 
     def __init__(self, level, type=None, previous_room=None):
         self.type = type
@@ -23,11 +26,23 @@ class Room:
         """
         for example: In Room room5, when user chooses "left", run Room.new_room(room5, "left", room5.level+1)
         """
-        
-        rand_type = Room.ROOM_TYPES[randint(1,3)]
-        print(rand_type)
+        # First, check whether there whether there is more than one open path. If so, don't allow new dead-end
+        # TO-DO: add logic to make sure you don't hit three enemies in a row or three forks in a row
+        if Room.open_paths > 3: # If too many options, give enemy or treasure
+            rand_type = Room.ROOM_TYPES[randint(2,3)]
+        elif Room.open_paths > 2: 
+            rand_type = Room.ROOM_TYPES[randint(1,3)]
+        elif Room.open_paths == 2:
+            rand_type = Room.ROOM_TYPES[randint(1,2)]
+        else:
+            rand_type = "fork" # if only one option left, give a fork
+
+        if rand_type == "fork": 
+            Room.open_paths += 1
+        elif rand_type == "dead_end": 
+            Room.open_paths -= 1
+            
         new_room = Room(level, rand_type, previous_room)
-        print(f"new_room: {new_room}")
         previous_room.adjacent_rooms[path] = new_room # adds this new room to the path dictionary for previous room
         return new_room
         ## Needs functionality to prevent too many dead-ends, 
@@ -160,3 +175,6 @@ class Room:
         else:
             new_room =  Room.create_new_room(self.level+1, previous_room=self, path=path)
             return new_room
+
+
+
