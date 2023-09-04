@@ -171,28 +171,49 @@ class Room:
         """
         Run upon entering treasure room
         """
-        print(
-            """
------------------------------------------------------------------------------
-        You've found a small chamber with a treasure chest!
-        You open it and find a better sword!
-        It's a dead-end, so you must go back...
-            """
+        slow_text(
+            "You've found a small chamber. A dead end. However, you spot a treasure chest hidden near the back of the room! Will you open it?"
         )
-        player.attack += 2
+
         outcome = None
         while not outcome:
-            print(
-                """
-                (1) Go back
-                (x) Exit game
-            """
-            )
-            choice = input("Enter your choice: (1 or x): ")
-            if choice == "1":
-                outcome = "previous"
-            elif choice == "x":
-                outcome = "exit"
+            deciding = True
+
+            while deciding:
+                decision = input("\nOpen the chest? [y/n]: ")
+                decision.lower()
+
+                if decision == "y":
+                    rand_chest = randint(1, 3)
+
+                    if rand_chest == 1:
+                        slow_text(
+                            "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
+                        )
+                        player.attack += 2
+                        deciding = False
+                        outcome = "previous"
+                    elif rand_chest == 2:
+                        slow_text(
+                            "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
+                        )
+                        player.health += 1
+                        deciding = False
+                        outcome = "previous"
+                    elif rand_chest == 3:
+                        slow_text("The chest is empty! You sadly return to the previous area.")
+                        deciding = False
+                        outcome = "previous"
+
+                elif decision == "n":
+                    slow_text(
+                        "You choose to leave the chest untouched and return to the previous area."
+                    )
+                    deciding = False
+                    outcome = "previous"
+                else:
+                    print("\nNot a valid input!")
+
         return outcome
 
     def enter_room(self, path):
