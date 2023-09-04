@@ -99,7 +99,7 @@ def view_sign_up_menu():
             User(username, password)
             print(f"\nWelcome, {username.upper()}!")
             print(f"\nHigh Score: 0")
-            print("\nBeginning your adventure...")
+            # print("\nBeginning your adventure...")
             mainGame(0)
             deciding = False
         elif decision == "n":
@@ -141,7 +141,7 @@ def view_log_in_menu():
         ready.lower()
 
         if ready == "begin":
-            print("\nBeginning your adventure...")
+            # print("\nBeginning your adventure...")
             mainGame(account_info[3])
             deciding = False
         elif ready == "details":
