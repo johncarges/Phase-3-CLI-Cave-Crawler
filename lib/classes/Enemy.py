@@ -1,12 +1,42 @@
+import sqlite3
+from random import randint
+CONN = sqlite3.connect("./lib/db/cave_crawler.db")
+CURSOR = CONN.cursor()
+
 class Enemy:
 
-    encountered = []
+    
 
-    def __init__(self, type, health, attack):
-        self.type = type
+    def __init__(self, name, health, attack, description, id=None):
+        self.id = id
+        self.name = name
         self.health = health
         self.attack = attack
-        Enemy.encountered.append(self)
+        self.description = description
+
+    def __repr__(self):
+        return f"Enemy {self.name}"
+
+    @classmethod
+    def create_from_db(cls, level):
+        """Creates new enemy instance from enemy database, 
+        based on current level"""
+        sql = f"""
+            SELECT * FROM enemies
+            WHERE level < {level}
+        """
+        possible_enemies = CURSOR.execute(sql).fetchall()
+        print(possible_enemies)
+        index = randint(0, len(possible_enemies)-1)
+        new_enemy = possible_enemies[index]
+        return Enemy(
+            id=new_enemy[0], 
+            name=new_enemy[1],
+            health=new_enemy[2],
+            attack=new_enemy[3],
+            description=new_enemy[5]
+            )
 
     def is_dead(self):
         return self.health <= 0
+    

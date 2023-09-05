@@ -1,5 +1,6 @@
 from random import randint
-
+from classes.Enemy import Enemy
+from classes.encounter import Encounter
 
 class Room:
 
@@ -52,7 +53,7 @@ class Room:
         return Room(level=0, type="start")
 
     @classmethod
-    def starting_room(cls, player):
+    def starting_room(cls, player, user=None):
         """
             Run upon entering or starting in initial room
         """
@@ -85,22 +86,27 @@ class Room:
         return outcome
 
     @classmethod
-    def enemy_encounter(cls,player=None, enemy=None):
+    def enemy_encounter(cls,player=None, user=None, enemy=None, level=1):
         """
             Run upon entering an enemy-type room
             Player health may change during function run
             Returns outcome: direction
         """
-        # eventually, should be loop for battle event
+        new_enemy = Enemy.create_from_db(level)
+        # new_encounter = Encounter(user=user, enemy=new_enemy)
+        # eventually, should loop for battle
         # eventually, should be different text if we return to this room
-        print("""
+        print(f"""
 -----------------------------------------------------------------------------
-        You slay a giant beast! 
+        You slay a {new_enemy.name}! 
         Which do you choose? 
         (1) Continue
         (2) Go back
         (x) Exit to main menu
                 """)
+        
+        # new_encounter.update_after_defeat()
+
         outcome = None
         while not outcome:
             choice = input("Enter your choice: (1, 2,or x): ")
@@ -115,7 +121,7 @@ class Room:
         return outcome
 
     @classmethod
-    def fork_room(cls, player):
+    def fork_room(cls, player, user=None):
         """
             Run upon entering fork in the road room
         """
@@ -144,7 +150,7 @@ class Room:
         return outcome
     
     @classmethod
-    def treasure_room(cls, player, treasure=None):
+    def treasure_room(cls, player, treasure=None,user=None):
         """
             Run upon entering treasure room
         """
