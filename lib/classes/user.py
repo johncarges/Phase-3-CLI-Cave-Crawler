@@ -93,3 +93,11 @@ class User:
         account_info = CURSOR.execute(sql).fetchone()
 
         return account_info
+    
+
+    ## DEBUG METHOD TO USE FIRST USER
+    @classmethod
+    def sample_user(cls):
+        sql = "SELECT * FROM users"
+        user_info = CURSOR.execute(sql).fetchone()
+        return User(id=user_info[0],username=user_info[1],password=user_info[2])
