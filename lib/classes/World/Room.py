@@ -3,6 +3,7 @@ import time
 import re
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
+from prints.print_formats import print_basic_menu
 
 
 # prints an empty line, "types" out the text, prints another empty line
