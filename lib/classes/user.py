@@ -5,16 +5,15 @@ CURSOR = CONN.cursor()
 
 
 class User:
-    def __init__(self, username, password, id=None):
+    def __init__(self, username, password, high_score=0, times_played=0, times_won=0, id=None):
         self.username = username
         self.password = password
+        self.high_score = high_score
+        self.times_played = times_played
+        self.times_won = times_won
         self.id = id
-        self.high_score = 0
-        self.times_played = 0
-        self.times_won = 0
 
         self.create_user_table()
-        self.save_account()
 
     @classmethod
     def create_user_table(cls):
@@ -81,16 +80,16 @@ class User:
         else:
             return password_input
 
-    @classmethod
-    def on_successful_login(cls, username):
-        sql = f"SELECT * FROM users WHERE username = '{username}'"
-        account_info = CURSOR.execute(sql).fetchone()
+    # @classmethod
+    # def on_successful_login(cls, username):
+    #     sql = f"SELECT * FROM users WHERE username = '{username}'"
+    #     account_info = CURSOR.execute(sql).fetchone()
 
-        return account_info
+    #     return account_info
 
     @classmethod
     def on_successful_login(cls, username, password):
         sql = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
         account_info = CURSOR.execute(sql).fetchone()
 
-        return current_user
+        return account_info

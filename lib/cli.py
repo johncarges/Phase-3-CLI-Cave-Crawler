@@ -77,13 +77,13 @@ def print_account_details_menu():
 def print_sub_menu():
     print("                            ")
     print("+--------------------------+")
-    print("| WELCOME TO CAVE CRAWLER! |")
+    print("|     WILL YOU ESCAPE ?    |")
     print("+--------------------------+")
     print("| Options:                 |")
     print("| 1. Begin Game            |")
     print("| 2. Account Details       |")
     print("| 3. Enemies Encountered   |")
-    print("| x: Exit Game             |")
+    print("| x: Log Out               |")
     print("+--------------------------+")
     print("                            ")
 
@@ -113,6 +113,7 @@ def view_sign_up_menu():
 
         if decision == "y":
             current_user = User(username, password)
+            current_user.save_account()
             print(f"\nWelcome, {username.upper()}!")
             print(f"\nHigh Score: 0")
             deciding = False
@@ -127,6 +128,8 @@ def view_sign_up_menu():
 
 
 def view_log_in_menu():
+    current_user = None
+
     print_log_in_header()
     print("Enter your account details:")
 
@@ -136,7 +139,11 @@ def view_log_in_menu():
     password_input = input("Password: ")
     password = User.match_password(password_input)
 
-    current_user = User.on_successful_login(username, password)
+    account_info = User.on_successful_login(username, password)
+
+    current_user = User(
+        account_info[1], account_info[2], account_info[3], account_info[4], account_info[5]
+    )
 
     # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won
     # print(account_info)
@@ -175,13 +182,13 @@ def view_game_over_menu():
             print("Not a valid input!")
 
 
-def view_account_details_menu(account_info):
+# do we actually need this??
+def view_account_details_menu(current_user):
     print_account_details_menu()
 
-    # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won
-    print(f"High Score: {account_info[3]}")
-    print(f"Times Played: {account_info[4]}")
-    print(f"Times Won: {account_info[5]}")
+    print(f"High Score: {current_user.high_score}")
+    print(f"Times Played: {current_user.times_played}")
+    print(f"Times Won: {current_user.times_won}")
 
     deciding = True
 
@@ -204,9 +211,9 @@ def view_account_details_menu(account_info):
             print("\nNot a valid input!")
 
 
-def mainGame(high_score):
+def mainGame(current_user):
     player = Player()
-    high_score = high_score
+    high_score = current_user.high_score
     highest_level_reached = 0
 
     game_looping = True
@@ -248,7 +255,10 @@ def subMenu(current_user):
         if choice == "1":
             mainGame(current_user)
         elif choice == "2":
-            view_account_details_menu(current_user)
+            print_account_details_menu()
+            print(f"High Score: {current_user.high_score}")
+            print(f"Times Played: {current_user.times_played}")
+            print(f"Times Won: {current_user.times_won}")
         elif choice == "3":
             # view_enemy_encounters(current_user)
             pass
