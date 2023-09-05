@@ -206,9 +206,8 @@ def view_account_details_menu(account_info):
             print("\nNot a valid input!")
 
 
-def mainGame(high_score):
+def mainGame(high_score, user=None):
     player = Player()
-    high_score = high_score
     highest_level_reached = 0
 
     game_looping = True

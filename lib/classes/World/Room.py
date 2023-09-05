@@ -112,7 +112,8 @@ class Room:
         Returns outcome: direction
         """
         new_enemy = Enemy.create_from_db(level)
-        # new_encounter = Encounter(user=user, enemy=new_enemy)
+        if user:
+            new_encounter = Encounter(user=user, enemy=new_enemy)
         # eventually, should loop for battle
         # eventually, should be different text if we return to this room
 
@@ -126,8 +127,8 @@ class Room:
 
                 """
         )
-        
-        # new_encounter.update_after_defeat()
+        if user:
+            new_encounter.update_after_defeat()
 
         outcome = None
         while not outcome:
