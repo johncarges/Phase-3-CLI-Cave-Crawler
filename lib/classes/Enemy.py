@@ -26,7 +26,7 @@ class Enemy:
             WHERE level < {level}
         """
         possible_enemies = CURSOR.execute(sql).fetchall()
-        print(possible_enemies)
+        #print(possible_enemies)
         index = randint(0, len(possible_enemies)-1)
         new_enemy = possible_enemies[index]
         return Enemy(
