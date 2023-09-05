@@ -87,3 +87,10 @@ class User:
         account_info = CURSOR.execute(sql).fetchone()
 
         return account_info
+
+    @classmethod
+    def on_successful_login(cls, username, password):
+        sql = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+        account_info = CURSOR.execute(sql).fetchone()
+
+        return current_user

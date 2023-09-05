@@ -74,8 +74,24 @@ def print_account_details_menu():
     print("                            ")
 
 
+def print_sub_menu():
+    print("                            ")
+    print("+--------------------------+")
+    print("| WELCOME TO CAVE CRAWLER! |")
+    print("+--------------------------+")
+    print("| Options:                 |")
+    print("| 1. Begin Game            |")
+    print("| 2. Account Details       |")
+    print("| 3. Enemies Encountered   |")
+    print("| x: Exit Game             |")
+    print("+--------------------------+")
+    print("                            ")
+
+
 # menus
 def view_sign_up_menu():
+    current_user = None
+
     print_sign_up_header()
     print("Create an account:")
     print("Username and password must be strings between 2 and 20 characters.")
@@ -96,11 +112,9 @@ def view_sign_up_menu():
         decision.lower()
 
         if decision == "y":
-            User(username, password)
+            current_user = User(username, password)
             print(f"\nWelcome, {username.upper()}!")
             print(f"\nHigh Score: 0")
-            # print("\nBeginning your adventure...")
-            mainGame(0)
             deciding = False
         elif decision == "n":
             print("\nAccount creation canceled.")
@@ -108,6 +122,8 @@ def view_sign_up_menu():
             deciding = False
         else:
             print("\nNot a valid input!")
+
+    return current_user
 
 
 def view_log_in_menu():
@@ -118,9 +134,9 @@ def view_log_in_menu():
     username = User.match_username(username_input)
 
     password_input = input("Password: ")
-    User.match_password(password_input)
+    password = User.match_password(password_input)
 
-    account_info = User.on_successful_login(username)
+    current_user = User.on_successful_login(username, password)
 
     # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won
     # print(account_info)
@@ -131,25 +147,7 @@ def view_log_in_menu():
     print(f"Times Played: {account_info[4]}")
     print(f"Times Won: {account_info[5]}")
 
-    deciding = True
-
-    while deciding:
-        print("\nInput 'begin' to start your adventure.")
-        print("Input 'details' to see your account details.")
-
-        ready = input("\nInput your choice: ")
-        ready.lower()
-
-        if ready == "begin":
-            # print("\nBeginning your adventure...")
-            mainGame(account_info[3])
-            deciding = False
-        elif ready == "details":
-            print("\nLoading account details...")
-            view_account_details_menu(account_info)
-            deciding = False
-        else:
-            print("\nNot a valid input!")
+    return current_user
 
 
 # display once player reaches victory/defeat
@@ -237,15 +235,48 @@ def mainGame(high_score):
             current_room = current_room.enter_room(new_outcome)
 
 
+# logged in, sub menu
+def subMenu(current_user):
+    current_user = current_user
+    menu_looping = True
+
+    while menu_looping:
+        print_sub_menu()
+        choice = input("Input your choice: ")
+        choice = choice.lower()
+
+        if choice == "1":
+            mainGame(current_user)
+        elif choice == "2":
+            view_account_details_menu(current_user)
+        elif choice == "3":
+            # view_enemy_encounters(current_user)
+            pass
+        elif choice == "x":
+            print("\nLogging out...")
+            menu_looping = False
+        else:
+            print("\nNot a valid input!")
+
+
+# main menu
 while looping:
     print_login_screen()
     choice = input("Input your choice: ")
     choice = choice.lower()
 
     if choice == "1":
-        view_sign_up_menu()
+        current_user = view_sign_up_menu()
+        if current_user == None:
+            looping = False
+        else:
+            subMenu(current_user)
     elif choice == "2":
-        view_log_in_menu()
+        current_user = view_log_in_menu()
+        if current_user == None:
+            looping = False
+        else:
+            subMenu(current_user)
     elif choice == "x":
         looping = False
         print("Exiting game...")
