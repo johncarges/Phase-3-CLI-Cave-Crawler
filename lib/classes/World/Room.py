@@ -184,7 +184,7 @@ class Room:
                 decision.lower()
 
                 if decision == "y":
-                    rand_chest = randint(1, 3)
+                    rand_chest = randint(1, 4)
 
                     if rand_chest == 1:
                         slow_text(
@@ -202,6 +202,13 @@ class Room:
                         outcome = "previous"
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
+                        deciding = False
+                        outcome = "previous"
+                    elif rand_chest == 4:
+                        slow_text(
+                            "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
+                        )
+                        player.health -= 2
                         deciding = False
                         outcome = "previous"
 
