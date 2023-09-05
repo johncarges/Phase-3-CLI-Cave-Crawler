@@ -48,6 +48,17 @@ battle_menu_dict = {
     "inputs": ["Input your choice: "]
 }
 
+defeated_enemy_menu_dict = {
+    "header": "What will you do?",
+    "options": {
+        "1": "Go Forward",
+        "2": "Go Back",
+        "x": "Exit Game" 
+    },
+    "input header": None,
+    "inputs": ["Input your choice: "]
+}
+
 test_menu = {
     "header": "Which menu do you want to see?",
     "options": {
@@ -61,7 +72,7 @@ test_menu = {
 }
 
 
-def print_basic_menu(menu_dict):
+def print_menu(menu_dict):
     inputs = []
     print("                            ")
     print("+" + "-"*(WINDOW_WIDTH-2) + "+")
@@ -86,7 +97,7 @@ def print_basic_menu(menu_dict):
 if __name__ == "__main__":
     looping=True
     while looping:
-        choice = print_basic_menu(test_menu)[0]
+        choice = print_menu(test_menu)[0]
         if choice == "1":
             menu = sign_up_menu_dict
         elif choice == "2":
@@ -100,5 +111,5 @@ if __name__ == "__main__":
             print("Not a valid input!")
             continue
 
-        return_value = print_basic_menu(menu)
+        return_value = print_menu(menu)
         print(f"Input received: {return_value}")
