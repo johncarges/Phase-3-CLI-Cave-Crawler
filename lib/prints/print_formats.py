@@ -1,5 +1,4 @@
-WINDOW_WIDTH = 45
-LEFT_MARGIN = " "*4
+WINDOW_WIDTH = 36
 
 
 """
@@ -25,14 +24,14 @@ main_menu_dict = {
 }
 
 sub_menu_dict = {
-    "header": "WILL YOU ESCAPE?",
+    "header": "CAVE CRAWLER",
     "options": {
         "1": "Begin Game",
         "2": "Account Details",
         "3": "Enemies Encountered",
         "x": "Log Out",
     },
-    "input_header": "Input your choice: "
+    "input_header": "Input your choice: ",
 }
 
 
@@ -42,21 +41,12 @@ battle_menu_dict = {
     "input_header": "Input your choice: ",
 }
 
-game_over_dict = {
-    "header": "GAME OVER",
-    "options": {"1": "Play Again", "2": "Main Menu"},
-    "input_header": "Input your choice: ",
-}
 
 defeated_enemy_menu_dict = {
     "header": "What will you do?",
-    "options": {
-        "1": "Go Forward",
-        "2": "Go Back",
-        "x": "Exit Game" 
-    },
+    "options": {"1": "Go Forward", "2": "Go Back", "x": "Exit Game"},
     "input header": None,
-    "inputs": ["Input your choice: "]
+    "inputs": ["Input your choice: "],
 }
 
 test_menu = {
@@ -67,19 +57,19 @@ test_menu = {
 
 
 def print_menu(menu_dict):
-    print(LEFT_MARGIN +"                            ")
-    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print(LEFT_MARGIN +"|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH - 2) + "|")
-    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("                            ")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH - 2) + "|")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
     if menu_dict["options"]:
-        # print(LEFT_MARGIN +"| " + "{:<{}s}".format("Options:", WINDOW_WIDTH - 3) + "|")
+        # print("| " + "{:<{}s}".format("Options:", WINDOW_WIDTH - 3) + "|")
         for key, value in menu_dict["options"].items():
             string = f"{key}. {value}"
-            print(LEFT_MARGIN +"| " + "{:<{}s}".format(string, WINDOW_WIDTH - 3) + "|")
-        print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print(LEFT_MARGIN +"                            ")
+            print("| " + "{:<{}s}".format(string, WINDOW_WIDTH - 3) + "|")
+        print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("                            ")
     if menu_dict["input_header"]:
-        print(LEFT_MARGIN +menu_dict["input_header"], end="")
+        print(menu_dict["input_header"], end="")
         choice = input()
         choice.lower()
 
@@ -90,13 +80,15 @@ sign_up_header = "SIGN UP"
 log_in_header = "LOG IN"
 login_success_header = "LOGIN SUCCESSFUL"
 account_details_header = "ACCOUNT DETAILS"
+game_over_header = "GAME OVER"
+game_won_header = "YOU ESCAPED!!!"
 
 
 def print_header(header):
-    print(LEFT_MARGIN +"                            ")
-    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print(LEFT_MARGIN +"|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
-    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("                            ")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
 
 
 if __name__ == "__main__":
