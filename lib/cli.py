@@ -1,6 +1,8 @@
+import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
+
 
 from prints.print_formats import *
 import time
@@ -114,6 +116,22 @@ def view_account_details_menu(current_user):
     print(f"Times Played: {current_user.times_played}")
     print(f"Times Won: {current_user.times_won}")
 
+def view_enemy_encounters(user):
+    
+    CONN = sqlite3.connect("./lib/db/cave_crawler.db")
+    CURSOR = CONN.cursor()
+    sql = f"""
+        SELECT DISTINCT enemies.name
+        FROM enemies
+        INNER JOIN encounters
+        ON enemies.id = encounters.enemy
+        WHERE encounters.user = {user.id}
+        AND encounters.defeated = TRUE 
+    """
+    defeated_enemies = CURSOR.execute(sql).fetchall()
+    print(f'Defeated Enemies: {defeated_enemies}')
+    
+
 
 def mainGame(current_user):
     player = Player()
@@ -162,7 +180,7 @@ def mainGame(current_user):
 
         else:
             current_room = current_room.exit_room(new_outcome)
-
+    
 
 # logged in, sub menu
 def subMenu(current_user):
@@ -180,7 +198,7 @@ def subMenu(current_user):
             print(f"Times Played: {current_user.times_played}")
             print(f"Times Won: {current_user.times_won}")
         elif choice == "3":
-            # view_enemy_encounters(current_user)
+            view_enemy_encounters(current_user)
             pass
         elif choice == "x":
             print("\nLogging out...")

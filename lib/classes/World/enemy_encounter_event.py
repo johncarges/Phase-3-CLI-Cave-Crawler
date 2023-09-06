@@ -63,16 +63,19 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                     player.health -= enemy.attack
                     if player.health < 0:
                         outcome = "game over"
+                        break
             elif choice == "2":
                 coin = randint(0,1)
                 if coin == 0:
                     print_out.append(f"You successfully snuck by the {enemy.name}")
                     outcome = "straight"
+                    break
                 else:
                     print_out.append(f"The {enemy.name} sees you and attacks!")
                     player.health -= enemy.attack
                     if player.health < 0:
                         outcome = "game over"
+                        break
             elif choice == "3":
                 print("You decide to return to safety!")
                 outcome = "previous"
