@@ -1,6 +1,7 @@
 WINDOW_WIDTH = 45
 
 
+
 """
 +--------------------------+
 | WELCOME TO CAVE CRAWLER! | #HEADER
@@ -13,39 +14,38 @@ WINDOW_WIDTH = 45
 
 Input your choice below      # INPUT HEADER
 
-Input your choice: 2         # INPUTS
+Input your choice: 2         # INPUT
 
 """
 
 main_menu_dict = {
     "header": "WELCOME TO CAVE CRAWLER!",
-    "options": {
-        "1": "Sign Up",
-        "2": "Log in",
-        "3": "Show enemies",
-        "x": "Exit Game"
-    },
-    "input header": None,
-    "inputs": ["Input your choice: "]
+    "options": {"1": "Sign Up", "2": "Log In", "x": "Exit Game"},
+    "input_header": "Input your choice: ",
 }
 
-sign_up_menu_dict = {
-    "header": "SIGN UP",
-    "options": None,
-    "input header": "Enter your account details:",
-    "inputs": ["Username:", "Password:"]
+sub_menu_dict = {
+    "header": "WILL YOU ESCAPE?",
+    "options": {
+        "1": "Begin Game",
+        "2": "Account Details",
+        "3": "Enemies Encountered",
+        "x": "Log Out",
+    },
+    "input_header": "Input your choice: ",
 }
+
 
 battle_menu_dict = {
-    "header": "What will you do?",
-    "options": {
-        "1": "Attack",
-        "2": "Sneak",
-        "3": "Run",
-        "x": "Exit Game" 
-    },
-    "input header": None,
-    "inputs": ["Input your choice: "]
+    "header": "BATTLE",
+    "options": {"1": "Attack", "2": "Sneak", "3": "Run", "x": "Exit Game"},
+    "input_header": "Input your choice: ",
+}
+
+game_over_dict = {
+    "header": "GAME OVER",
+    "options": {"1": "Play Again", "2": "Main Menu"},
+    "input_header": "Input your choice: ",
 }
 
 defeated_enemy_menu_dict = {
@@ -61,41 +61,46 @@ defeated_enemy_menu_dict = {
 
 test_menu = {
     "header": "Which menu do you want to see?",
-    "options": {
-        "1": "Sign up",
-        "2": "Main Menu",
-        "3": "Battle",
-        "x": "Exit"
-    },
-    "input header": "Think carefully",
-    "inputs": ["Input your choice: "]
+    "options": {"1": "Sign up", "2": "Main Menu", "3": "Battle", "x": "Exit"},
+    "input_header": "Input your choice: ",
 }
 
 
 def print_menu(menu_dict):
-    inputs = []
     print("                            ")
-    print("+" + "-"*(WINDOW_WIDTH-2) + "+")
-    print("|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH-2) +"|")
-    print("+" + "-"*(WINDOW_WIDTH-2) + "+")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH - 2) + "|")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
     if menu_dict["options"]:
-        print("| "+ "{:<{}s}".format("Options:",WINDOW_WIDTH-3) + "|")
+        # print("| " + "{:<{}s}".format("Options:", WINDOW_WIDTH - 3) + "|")
         for key, value in menu_dict["options"].items():
             string = f"{key}. {value}"
-            print("| " + '{:<{}s}'.format(string, WINDOW_WIDTH-3) + "|")
-        print("+" + "-"*(WINDOW_WIDTH-2) + "+")
+            print("| " + "{:<{}s}".format(string, WINDOW_WIDTH - 3) + "|")
+        print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
     print("                            ")
-    if menu_dict["input header"]:
-        print(" " + '{:25}'.format(menu_dict["input header"]))
-        print("                            ")
-    
-    for input_text in menu_dict["inputs"]:
-        new_input = input(input_text+ " ")
-        inputs.append(new_input)
-    return inputs
+    if menu_dict["input_header"]:
+        print(menu_dict["input_header"], end="")
+        choice = input()
+        choice.lower()
+
+    return choice
+
+
+sign_up_header = "SIGN UP"
+log_in_header = "LOG IN"
+login_success_header = "LOGIN SUCCESSFUL"
+account_details_header = "ACCOUNT DETAILS"
+
+
+def print_header(header):
+    print("                            ")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print("|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
+    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+
 
 if __name__ == "__main__":
-    looping=True
+    looping = True
     while looping:
         choice = print_menu(test_menu)[0]
         if choice == "1":

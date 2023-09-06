@@ -7,6 +7,7 @@ from prints.print_formats import print_menu
 from classes.World.enemy_encounter_event import enemy_encounter
 
 
+
 # prints an empty line, "types" out the text, prints another empty line
 # TALK ABOUT WHERE TO PUT THIS/IF WE EVEN WANT IT.
 def slow_text(text, delay=0.03):
@@ -116,6 +117,7 @@ class Room:
         return outcome
    
     def enemy_encounter(self,player=None, user=None):
+
         """
         Run upon entering an enemy-type room.
         Player health may change during function run.
@@ -132,6 +134,7 @@ class Room:
         
         # if user:
         #     new_encounter.update_after_defeat()
+
 
         return outcome
 
@@ -166,6 +169,7 @@ class Room:
         return outcome
 
     def treasure_room(self, player, treasure=None,user=None):
+
         """
         Run upon entering treasure room
         """
