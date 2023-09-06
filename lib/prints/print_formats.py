@@ -47,6 +47,17 @@ game_over_dict = {
     "input_header": "Input your choice: ",
 }
 
+defeated_enemy_menu_dict = {
+    "header": "What will you do?",
+    "options": {
+        "1": "Go Forward",
+        "2": "Go Back",
+        "x": "Exit Game" 
+    },
+    "input header": None,
+    "inputs": ["Input your choice: "]
+}
+
 test_menu = {
     "header": "Which menu do you want to see?",
     "options": {"1": "Sign up", "2": "Main Menu", "3": "Battle", "x": "Exit"},
