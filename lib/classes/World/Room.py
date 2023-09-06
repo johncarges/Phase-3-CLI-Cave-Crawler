@@ -3,7 +3,7 @@ import time
 import re
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
-from prints.print_formats import print_basic_menu
+from prints.print_formats import print_menu
 
 
 # prints an empty line, "types" out the text, prints another empty line
@@ -106,7 +106,7 @@ class Room:
         return outcome
 
     @classmethod
-    def enemy_encounter(cls,player=None, user=None, enemy=None, level=1):
+    def enemy_encounter(cls, player=None, user=None, enemy=None, level=1):
         """
         Run upon entering an enemy-type room
         Player health may change during function run
@@ -118,7 +118,8 @@ class Room:
         # eventually, should loop for battle
         # eventually, should be different text if we return to this room
 
-        print(f"""
+        print(
+            f"""
 -----------------------------------------------------------------------------
         You slay a {new_enemy.name}! 
         Which do you choose? 
@@ -176,7 +177,7 @@ class Room:
         return outcome
 
     @classmethod
-    def treasure_room(cls, player, treasure=None,user=None):
+    def treasure_room(cls, player, treasure=None, user=None):
         """
         Run upon entering treasure room
         """
