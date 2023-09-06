@@ -43,7 +43,6 @@ def print_cave_outline():
     print("+--------------------------------------------------------------------------------+")
     time.sleep(1)
 
-
 # menus
 def view_sign_up_menu():
     current_user = None
@@ -98,7 +97,7 @@ def view_log_in_menu():
     account_info = User.on_successful_login(username, password)
 
     current_user = User(
-        account_info[1], account_info[2], account_info[3], account_info[4], account_info[5]
+        account_info[1], account_info[2], account_info[3], account_info[4], account_info[5], id=account_info[0]
     )
 
     # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won

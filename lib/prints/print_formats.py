@@ -13,8 +13,6 @@ WINDOW_WIDTH = 36
 
 Input your choice below      # INPUT HEADER
 
-Input your choice: 2         # INPUT
-
 """
 
 main_menu_dict = {
@@ -44,9 +42,13 @@ battle_menu_dict = {
 
 defeated_enemy_menu_dict = {
     "header": "What will you do?",
-    "options": {"1": "Go Forward", "2": "Go Back", "x": "Exit Game"},
-    "input header": None,
-    "inputs": ["Input your choice: "],
+    "options": {
+        "1": "Go Forward",
+        "2": "Go Back",
+        "x": "Exit Game" 
+    },
+    "input_header": None
+
 }
 
 test_menu = {
@@ -72,8 +74,7 @@ def print_menu(menu_dict):
         print(menu_dict["input_header"], end="")
         choice = input()
         choice.lower()
-
-    return choice
+        return choice
 
 
 sign_up_header = "SIGN UP"

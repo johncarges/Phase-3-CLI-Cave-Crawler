@@ -35,6 +35,7 @@ class User:
             sql, (self.username, self.password, self.high_score, self.times_played, self.times_won)
         )
         CONN.commit()
+        self.id = CURSOR.execute("SELECT last_insert_rowid() FROM users").fetchone()
 
     # sign up methods
     @classmethod
