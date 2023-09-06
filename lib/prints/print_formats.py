@@ -1,5 +1,5 @@
 WINDOW_WIDTH = 45
-
+LEFT_MARGIN = " "*4
 
 
 """
@@ -32,7 +32,7 @@ sub_menu_dict = {
         "3": "Enemies Encountered",
         "x": "Log Out",
     },
-    "input_header": "Input your choice: ",
+    "input_header": "Input your choice: "
 }
 
 
@@ -67,19 +67,19 @@ test_menu = {
 
 
 def print_menu(menu_dict):
-    print("                            ")
-    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print("|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH - 2) + "|")
-    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print(LEFT_MARGIN +"                            ")
+    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print(LEFT_MARGIN +"|" + "{:^{}s}".format(menu_dict["header"], WINDOW_WIDTH - 2) + "|")
+    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
     if menu_dict["options"]:
-        # print("| " + "{:<{}s}".format("Options:", WINDOW_WIDTH - 3) + "|")
+        # print(LEFT_MARGIN +"| " + "{:<{}s}".format("Options:", WINDOW_WIDTH - 3) + "|")
         for key, value in menu_dict["options"].items():
             string = f"{key}. {value}"
-            print("| " + "{:<{}s}".format(string, WINDOW_WIDTH - 3) + "|")
-        print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print("                            ")
+            print(LEFT_MARGIN +"| " + "{:<{}s}".format(string, WINDOW_WIDTH - 3) + "|")
+        print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print(LEFT_MARGIN +"                            ")
     if menu_dict["input_header"]:
-        print(menu_dict["input_header"], end="")
+        print(LEFT_MARGIN +menu_dict["input_header"], end="")
         choice = input()
         choice.lower()
 
@@ -93,10 +93,10 @@ account_details_header = "ACCOUNT DETAILS"
 
 
 def print_header(header):
-    print("                            ")
-    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
-    print("|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
-    print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print(LEFT_MARGIN +"                            ")
+    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
+    print(LEFT_MARGIN +"|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
+    print(LEFT_MARGIN +"+" + "-" * (WINDOW_WIDTH - 2) + "+")
 
 
 if __name__ == "__main__":

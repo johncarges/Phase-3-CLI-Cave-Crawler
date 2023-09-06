@@ -1,3 +1,5 @@
+
+from prints.print_formats import print_menu
 import sqlite3
 
 
@@ -53,9 +55,39 @@ def create_encounter_table():
     
     CURSOR.execute(sql)
 
+debug_menu_dict = {
+    "header": "What do you wish to do?",
+    "options": {
+        "1": "Add enemy",
+        "x": "Quit",
+    },
+    "input_header": "Input your choice: "}
+
 
 if __name__ == "__main__":
     # UNCOMMENT ALL THREE IF YOU DON"T HAVE ENEMY OR ENCOUNTERS TABLE
+    looping = True
+    while looping:
+        choice = print_menu(debug_menu_dict)
+        
+        if choice =="1":
+            enemy = input("enemy name: ")
+            health = input("enemy health: ")
+            attack = input("enemy attack: ")
+            level = input("enemy level: ")
+            description = input("enemy description: ")
+            print(f"Name: {enemy}   Health: {health}   Attack: {attack}   Level: {level}")
+            print(f"{description}")
+            choice = input("Save? [y/n]")
+            if choice == "y":
+                sql = "INSERT INTO enemies ( name, health, attack, level, description ) values (? , ?, ?, ?, ?)"
+                CURSOR.execute(sql, (enemy,health,attack,level,description))
+                CONN.commit()
+        elif choice == "x":
+            break
+        else:
+            print("not a valid input")
+            
 
     #create_enemy_table()
     #add_enemy_to_db(enemy_list)
