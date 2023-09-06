@@ -6,20 +6,24 @@ from classes.encounter import Encounter
 from prints.print_formats import print_menu
 from classes.World.enemy_encounter_event import enemy_encounter
 
+DEBUGGING = True
 
 
 # prints an empty line, "types" out the text, prints another empty line
 # TALK ABOUT WHERE TO PUT THIS/IF WE EVEN WANT IT.
 def slow_text(text, delay=0.03):
-    print()
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-
-    for sentence in sentences:
-        for char in sentence:
-            print(char, end="", flush=True)
-            time.sleep(delay)
+    if DEBUGGING:
+        print(text)
+    else:
         print()
-        time.sleep(0.5)
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+
+        for sentence in sentences:
+            for char in sentence:
+                print(char, end="", flush=True)
+                time.sleep(delay)
+            print()
+            time.sleep(0.5)
 
 
 class Room:
@@ -135,12 +139,11 @@ class Room:
             print(f"New {self.enemy} created!") #DEBUG 
         if self.first_time:
             new_encounter = Encounter(user=user, enemy=self.enemy)
-        # eventually, should loop for battle
-        # eventually, should be different text if we return to this room
-
+        
         (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
         
         if enemy_defeated:
+            #print(f"Adding encounter between {user.username} and {self.enemy.name}")
             new_encounter.update_after_defeat()
 
 
@@ -238,15 +241,15 @@ class Room:
 
         return outcome
 
-    def enter_room(self, path):
+    def exit_room(self, path):
         """(current room, path choice -> room (could be new or already visited) )"""
         if self.adjacent_rooms[path]:
             return self.adjacent_rooms[
                 path
             ]  # if room has already been explored, (self.adjacent_rooms[path] not None) return this room
         else:
-            print("new room")
             new_room = Room.create_new_room(self.level + 1, previous_room=self, path=path)
+            print(f"New room")
             return new_room
 
     def run_room(self,user=None, player=None, enemy=None, treasure=None):

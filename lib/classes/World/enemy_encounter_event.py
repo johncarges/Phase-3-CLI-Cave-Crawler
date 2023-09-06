@@ -30,10 +30,10 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             print_menu(defeated_enemy_menu_dict)
             choice = input("Input your choice: ")
             if choice == "1":
-                outcome = "previous"
+                outcome = "straight"
                 break
             elif choice == "2":
-                outcome = "straight"
+                outcome = "previous"
                 break
             elif choice == "x":
                 outcome = "exit"
@@ -85,5 +85,5 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             for item in print_out:
                 print(item)
         
-
+    print(f"outcome: {outcome}")
     return (outcome, enemy_defeated)

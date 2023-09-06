@@ -34,6 +34,7 @@ class Encounter:
         print(f"self.enemy.id: {self.enemy.id}")
         print(f"self.user.id: {self.user.id}")
         CURSOR.execute(sql, (self.enemy.id, self.user.id, self.defeated))
+        CONN.commit()
         self.id = CURSOR.execute("SELECT last_insert_rowid() FROM encounters").fetchone()[0]
 
     def update_after_defeat(self):

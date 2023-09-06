@@ -6,16 +6,11 @@ from prints.print_formats import *
 import time
 
 VICTORY_LEVEL = 6
+DEBUGGING = True
 
 looping = True
 high_score = 0
 
-ROOM_FUNCTIONS = {
-    "start": Room.starting_room,
-    "fork": Room.fork_room,
-    "enemy": Room.enemy_encounter,
-    "dead_end": Room.treasure_room,
-}
 
 
 # print methods
@@ -130,17 +125,14 @@ def mainGame(current_user):
 
     while game_looping:
         ##### DEBUGGING
-        if True:
-            print(f"player.health: {player.health}")
-            print(f"player.attack: {player.attack}")
+        if DEBUGGING:
+            #print(f"player.health: {player.health}")
+            #print(f"player.attack: {player.attack}")
             print(f"current_room: {current_room}")
-            print(f"current_level: {current_room.level}")
             print(f"open_paths: {Room.open_paths}")
         #####
 
-        new_outcome = ROOM_FUNCTIONS[current_room.type](
-            player
-        )  # return previous, exit, left, straight, right
+        new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
 
         if current_room.level == VICTORY_LEVEL:
             print_header(game_won_header)
@@ -169,7 +161,7 @@ def mainGame(current_user):
             game_looping = False
 
         else:
-            current_room = current_room.enter_room(new_outcome)
+            current_room = current_room.exit_room(new_outcome)
 
 
 # logged in, sub menu
