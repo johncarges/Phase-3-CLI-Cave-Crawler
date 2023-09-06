@@ -14,8 +14,6 @@ LEFT_MARGIN = " "*4
 
 Input your choice below      # INPUT HEADER
 
-Input your choice: 2         # INPUT
-
 """
 
 main_menu_dict = {
@@ -55,8 +53,7 @@ defeated_enemy_menu_dict = {
         "2": "Go Back",
         "x": "Exit Game" 
     },
-    "input header": None,
-    "inputs": ["Input your choice: "]
+    "input_header": None
 }
 
 test_menu = {
@@ -82,8 +79,7 @@ def print_menu(menu_dict):
         print(LEFT_MARGIN +menu_dict["input_header"], end="")
         choice = input()
         choice.lower()
-
-    return choice
+        return choice
 
 
 sign_up_header = "SIGN UP"

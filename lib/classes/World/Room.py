@@ -26,7 +26,7 @@ class Room:
     ROOM_TYPES = ["start", "fork", "enemy", "dead_end"]
 
     all = []
-
+    start_room = None
     open_paths = 3
 
     def __init__(self, level, type=None, previous_room=None, enemy=None, treasure=None):
@@ -46,6 +46,12 @@ class Room:
 
     def __repr__(self):
         return f"{self.type} room on level {self.level}"
+
+    @classmethod
+    def reset_rooms(cls):
+        cls.all = []
+        cls.open_paths = 3 
+        start_room = None
 
     @classmethod
     def create_new_room(cls, level, previous_room, path):
@@ -77,7 +83,8 @@ class Room:
 
     @classmethod
     def create_starting_room(cls):
-        return Room(level=0, type="start")
+        cls.start_room = Room(level=0, type="start")
+        return cls.start_room
 
     def starting_room(self, player=None, user=None):
         """
@@ -116,7 +123,7 @@ class Room:
                 print("Not a valid input!")
         return outcome
    
-    def enemy_encounter(self,player=None, user=None):
+    def enemy_room(self,player=None, user=None):
 
         """
         Run upon entering an enemy-type room.
@@ -125,15 +132,16 @@ class Room:
         """
         if not self.enemy:
             self.enemy = Enemy.create_from_db(self.level)
-        # if user:
-        #     new_encounter = Encounter(user=user, enemy=self.enemy)
+            print(f"New {self.enemy} created!") #DEBUG 
+        if self.first_time:
+            new_encounter = Encounter(user=user, enemy=self.enemy)
         # eventually, should loop for battle
         # eventually, should be different text if we return to this room
 
         (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
         
-        # if user:
-        #     new_encounter.update_after_defeat()
+        if enemy_defeated:
+            new_encounter.update_after_defeat()
 
 
         return outcome
@@ -249,7 +257,7 @@ class Room:
         elif self.type == "fork":
             outcome = self.fork_room()
         elif self.type == "enemy":
-            outcome = self.enemy_encounter(player, user)
+            outcome = self.enemy_room(player, user)
         elif self.type == "dead_end":
             outcome = self.treasure_room(player)
         return outcome

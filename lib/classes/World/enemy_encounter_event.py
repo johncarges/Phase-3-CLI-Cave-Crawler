@@ -20,14 +20,15 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     
 
     if enemy.is_dead():
-        print_menu({"header": f"You stand over the dead {enemy.name}", "options":None, "input header":None,"inputs":[]})
+        print_menu({"header": f"You stand over the dead {enemy.name}", "options":None, "input_header":None,"inputs":[]})
     else:
-        print_menu({"header": f"You come across an enemy {enemy.name}!", "options":None, "input header":None,"inputs":[]})
+        print_menu({"header": f"You come across an enemy {enemy.name}!", "options":None, "input_header":None,"inputs":[]})
 
     looping = True
     if enemy.is_dead():
         while looping:
-            choice = print_menu(defeated_enemy_menu_dict)[0]
+            print_menu(defeated_enemy_menu_dict)
+            choice = input("Input your choice: ")
             if choice == "1":
                 outcome = "previous"
                 break
@@ -45,7 +46,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
         while looping:
             
             print(f"{'{:>15}'.format(user.username)}: {'[]'*player.health}   \n{'{:>15}'.format(enemy.name)}: {'[]'*enemy.health}")
-            choice = print_menu(battle_menu_dict)[0]
+            choice = print_menu(battle_menu_dict)
             print("\n")
             print_out = []
             if choice == "1":
