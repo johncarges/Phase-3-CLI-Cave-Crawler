@@ -9,4 +9,9 @@ user = User.sample_user()
 enemy= Enemy.create_from_db(level=10)
 player= Player()
 
-enemy_encounter(user,player,enemy)
+(outcome, enemy_defeated) = enemy_encounter(user,player,enemy)
+
+# print(outcome)
+# print(enemy_defeated)
+
+

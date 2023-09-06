@@ -1,4 +1,5 @@
-WINDOW_WIDTH = 36
+WINDOW_WIDTH = 45
+
 
 
 """

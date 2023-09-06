@@ -4,6 +4,8 @@ import re
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
 from prints.print_formats import print_menu
+from classes.World.enemy_encounter_event import enemy_encounter
+
 
 
 # prints an empty line, "types" out the text, prints another empty line
@@ -23,17 +25,23 @@ def slow_text(text, delay=0.03):
 class Room:
     ROOM_TYPES = ["start", "fork", "enemy", "dead_end"]
 
+    all = []
+
     open_paths = 3
 
-    def __init__(self, level, type=None, previous_room=None):
+    def __init__(self, level, type=None, previous_room=None, enemy=None, treasure=None):
         self.type = type
         self.level = level
+        self.enemy = enemy
+        self.treasure = treasure
+        self.first_time = True
         self.adjacent_rooms = {
             "previous": previous_room,
             "left": None,
             "straight": None,
             "right": None,
         }
+        Room.all.append(self)
         # QUESTION - SSOT, should room only save next rooms? Find previous room with lookup?
 
     def __repr__(self):
@@ -71,16 +79,19 @@ class Room:
     def create_starting_room(cls):
         return Room(level=0, type="start")
 
-    @classmethod
-    def starting_room(cls, player, user=None):
+    def starting_room(self, player=None, user=None):
         """
         Run upon entering or starting in initial room
         """
         # Eventually, change text if player has already entered room
-        slow_text("Beginning your adventure...")
-        slow_text(
-            "You find yourself in a large, dark cave. Ahead of you, you see three tunnels branching off to the left, straight, and right."
-        )
+        if self.first_time:
+            slow_text("Beginning your adventure...")
+            slow_text(
+                "You find yourself in a large, dark cave. Ahead of you, you see three tunnels branching off to the left, straight, and right."
+            )
+            self.first_time = False
+        else:
+            print("You find yourself back where you woke up.")
         outcome = None
         while not outcome:
             print(
@@ -104,49 +115,30 @@ class Room:
             else:
                 print("Not a valid input!")
         return outcome
+   
+    def enemy_encounter(self,player=None, user=None):
 
-    @classmethod
-    def enemy_encounter(cls, player=None, user=None, enemy=None, level=1):
         """
-        Run upon entering an enemy-type room
-        Player health may change during function run
+        Run upon entering an enemy-type room.
+        Player health may change during function run.
         Returns outcome: direction
         """
-        new_enemy = Enemy.create_from_db(level)
-        if user:
-            new_encounter = Encounter(user=user, enemy=new_enemy)
+        if not self.enemy:
+            self.enemy = Enemy.create_from_db(self.level)
+        # if user:
+        #     new_encounter = Encounter(user=user, enemy=self.enemy)
         # eventually, should loop for battle
         # eventually, should be different text if we return to this room
 
-        print(
-            f"""
------------------------------------------------------------------------------
-        You slay a {new_enemy.name}! 
-        Which do you choose? 
-        (1) Continue
-        (2) Go back
-        (x) Exit to main menu
+        (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
+        
+        # if user:
+        #     new_encounter.update_after_defeat()
 
-                """
-        )
-        if user:
-            new_encounter.update_after_defeat()
 
-        outcome = None
-        while not outcome:
-            choice = input("Enter your choice: (1, 2,or x): ")
-            if choice == "1":
-                outcome = "straight"
-            elif choice == "2":
-                outcome = "previous"
-            elif choice == "x":
-                outcome = "exit"
-            else:
-                print("Not a valid response!")
         return outcome
 
-    @classmethod
-    def fork_room(cls, player, user=None):
+    def fork_room(self, player=None, user=None):
         """
         Run upon entering fork in the road room
         """
@@ -176,14 +168,19 @@ class Room:
                 print("Not a valid response!")
         return outcome
 
-    @classmethod
-    def treasure_room(cls, player, treasure=None, user=None):
+    def treasure_room(self, player, treasure=None,user=None):
+
         """
         Run upon entering treasure room
         """
-        slow_text(
-            "You've found a small chamber. A dead end. However, you spot a treasure chest hidden near the back of the room! Will you open it?"
-        )
+        if self.first_time:
+            slow_text(
+                "You've found a small chamber. A dead end. However, you spot a treasure chest hidden near the back of the room! Will you open it?"
+            )
+            self.first_time = False
+            # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
+        else:
+            print("You return to the dead end chamber for some reason")
 
         outcome = None
         while not outcome:
@@ -240,5 +237,19 @@ class Room:
                 path
             ]  # if room has already been explored, (self.adjacent_rooms[path] not None) return this room
         else:
+            print("new room")
             new_room = Room.create_new_room(self.level + 1, previous_room=self, path=path)
             return new_room
+
+    def run_room(self,user=None, player=None, enemy=None, treasure=None):
+        """Runs the relevant loop while user is inside a room"""
+        
+        if self.type == "start":
+            outcome = self.starting_room()
+        elif self.type == "fork":
+            outcome = self.fork_room()
+        elif self.type == "enemy":
+            outcome = self.enemy_encounter(player, user)
+        elif self.type == "dead_end":
+            outcome = self.treasure_room(player)
+        return outcome

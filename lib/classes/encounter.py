@@ -26,6 +26,7 @@ class Encounter:
             )    
         """
         CURSOR.execute(sql)
+        CONN.commit()
 
     def save_encounter(self):
         sql = "INSERT INTO encounters (enemy, user, defeated) values (?, ?, ?)"
@@ -39,6 +40,7 @@ class Encounter:
                 SET defeated = TRUE 
                 WHERE id = {self.id}"""
         CURSOR.execute(sql)
+        CONN.commit()
 
 
 
