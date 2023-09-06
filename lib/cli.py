@@ -6,10 +6,17 @@ from prints.print_formats import *
 import time
 
 VICTORY_LEVEL = 6
-DEBUGGING = False
 
 looping = True
 high_score = 0
+
+ROOM_FUNCTIONS = {
+    "start": Room.starting_room,
+    "fork": Room.fork_room,
+    "enemy": Room.enemy_encounter,
+    "dead_end": Room.treasure_room,
+}
+
 
 # print methods
 def print_cave_outline():
@@ -105,26 +112,6 @@ def view_log_in_menu():
     return current_user
 
 
-# display once player reaches victory/defeat
-def view_game_over_menu():
-    print_menu(game_over_dict)
-    deciding = True
-
-    while deciding:
-        choice = input("Input your choice: ")
-        choice = choice.lower()
-
-        if choice == "1":
-            print("\nBeginning your adventure...")
-            # send back to main game with newest high score
-            deciding = False
-        elif choice == "2":
-            print("\nReturning to main menu...")
-            deciding = False
-        else:
-            print("Not a valid input!")
-
-
 def view_account_details_menu(current_user):
     print_header(account_details_header)
 
@@ -143,7 +130,7 @@ def mainGame(current_user):
 
     while game_looping:
         ##### DEBUGGING
-        if DEBUGGING:
+        if True:
             print(f"player.health: {player.health}")
             print(f"player.attack: {player.attack}")
             print(f"current_room: {current_room}")
@@ -151,15 +138,36 @@ def mainGame(current_user):
             print(f"open_paths: {Room.open_paths}")
         #####
 
+        new_outcome = ROOM_FUNCTIONS[current_room.type](
+            player
+        )  # return previous, exit, left, straight, right
+
         if current_room.level == VICTORY_LEVEL:
-            return ("victory", VICTORY_LEVEL)
-         
-        # return previous, exit, left, straight, right
-        new_outcome = current_room.run_room(player=player, user=current_user)
+            print_header(game_won_header)
+            new_outcome = "exit"
+            current_user.times_won += 1
 
         if new_outcome == "exit":
-            print(Room.all)
-            return ("Failure", highest_level_reached)
+            highest_level_reached = current_room.level
+
+            if current_room.level != VICTORY_LEVEL:
+                print_header(game_over_header)
+
+                print(f"You reached level {highest_level_reached}!")
+
+            if highest_level_reached > high_score:
+                high_score = highest_level_reached
+
+            current_user.update_account_details(
+                current_user.username,
+                current_user.password,
+                high_score,
+                current_user.times_played,
+                current_user.times_won,
+            )
+            print(f"High Score: {high_score}")
+            game_looping = False
+
         else:
             current_room = current_room.enter_room(new_outcome)
 

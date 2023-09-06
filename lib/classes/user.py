@@ -94,6 +94,15 @@ class User:
 
         return account_info
 
+    @classmethod
+    def update_account_details(cls, username, password, high_score, times_played, times_won):
+        sql = f"UPDATE users SET high_score = '{high_score}', times_played = '{times_played + 1}', times_won = '{times_won}' WHERE username = '{username}' AND password = '{password}'"
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    ### use to reset account details (sqlite3, .open file-path)
+    # sql = f"UPDATE users SET high_score = 0, times_played = 0, times_won = 0 WHERE username = 'breelle' AND password = 'isawesome'"
+
     ## DEBUG METHOD TO USE FIRST USER
     @classmethod
     def sample_user(cls):
