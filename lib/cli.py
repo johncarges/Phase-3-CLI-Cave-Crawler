@@ -2,13 +2,12 @@ import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
-
+from helpers import DEBUGGING, VICTORY_LEVEL
 
 from prints.print_formats import *
 import time
 
-VICTORY_LEVEL = 6
-DEBUGGING = True
+
 
 looping = True
 high_score = 0
@@ -150,12 +149,13 @@ def mainGame(current_user):
             print(f"open_paths: {Room.open_paths}")
         #####
 
-        new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
 
         if current_room.level == VICTORY_LEVEL:
             print_header(game_won_header)
             new_outcome = "exit"
             current_user.times_won += 1
+        else:
+            new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
 
         if new_outcome == "exit":
             highest_level_reached = current_room.level
