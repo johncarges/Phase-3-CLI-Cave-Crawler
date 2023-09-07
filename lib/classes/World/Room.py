@@ -1,29 +1,8 @@
 from random import randint
-import time
-import re
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
-from prints.print_formats import print_menu
+from prints.print_formats import *
 from classes.World.enemy_encounter_event import enemy_encounter
-
-DEBUGGING = True
-
-
-# prints an empty line, "types" out the text, prints another empty line
-# TALK ABOUT WHERE TO PUT THIS/IF WE EVEN WANT IT.
-def slow_text(text, delay=0.03):
-    if DEBUGGING:
-        print(text)
-    else:
-        print()
-        sentences = re.split(r"(?<=[.!?])\s+", text)
-
-        for sentence in sentences:
-            for char in sentence:
-                print(char, end="", flush=True)
-                time.sleep(delay)
-            print()
-            time.sleep(0.5)
 
 
 class Room:
@@ -48,13 +27,13 @@ class Room:
         Room.all.append(self)
         # QUESTION - SSOT, should room only save next rooms? Find previous room with lookup?
 
-    def __repr__(self):
-        return f"{self.type} room on level {self.level}"
+    # def __repr__(self):
+    #     return f"{self.type} room on level {self.level}"
 
     @classmethod
     def reset_rooms(cls):
         cls.all = []
-        cls.open_paths = 3 
+        cls.open_paths = 3
         start_room = None
 
     @classmethod
@@ -94,27 +73,31 @@ class Room:
         """
         Run upon entering or starting in initial room
         """
-        # Eventually, change text if player has already entered room
         if self.first_time:
-            slow_text("Beginning your adventure...")
+            slow_text("\nBeginning your adventure...")
             slow_text(
-                "You find yourself in a large, dark cave. Ahead of you, you see three tunnels branching off to the left, straight, and right."
+                "\nWould you like to skip the narrative introduction? (Recommended for returning players.)"
             )
+            skip = input("\nSkip intro? [y/n]: ")
+
+            if skip == "n":
+                slow_text(hiking_text)
+                slow_text(waking_up_text)
+            elif skip == "y":
+                pass
+            else:
+                print("Not a valid input!")
+
+            slow_text(starting_text_first_time)
             self.first_time = False
+
         else:
-            print("You find yourself back where you woke up.")
+            slow_text(starting_text_after_first)
+
         outcome = None
         while not outcome:
-            print(
-                """
-            Which do you choose? 
-            (1) Left
-            (2) Straight
-            (3) Right
-            (x) Exit to main menu
-                    """
-            )
-            choice = input("Enter your choice: (1, 2, 3, or x): ")
+            choice = print_options(starting_room)
+
             if choice == "1":
                 outcome = "left"
             elif choice == "2":
@@ -126,9 +109,8 @@ class Room:
             else:
                 print("Not a valid input!")
         return outcome
-   
-    def enemy_room(self,player=None, user=None):
 
+    def enemy_room(self, player=None, user=None):
         """
         Run upon entering an enemy-type room.
         Player health may change during function run.
@@ -136,16 +118,15 @@ class Room:
         """
         if not self.enemy:
             self.enemy = Enemy.create_from_db(self.level)
-            print(f"New {self.enemy} created!") #DEBUG 
+            print(f"New {self.enemy} created!")  # DEBUG
         if self.first_time:
             new_encounter = Encounter(user=user, enemy=self.enemy)
-        
-        (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
-        
-        if enemy_defeated:
-            #print(f"Adding encounter between {user.username} and {self.enemy.name}")
-            new_encounter.update_after_defeat()
 
+        (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
+
+        if enemy_defeated:
+            # print(f"Adding encounter between {user.username} and {self.enemy.name}")
+            new_encounter.update_after_defeat()
 
         return outcome
 
@@ -153,20 +134,11 @@ class Room:
         """
         Run upon entering fork in the road room
         """
-        print(
-            """
------------------------------------------------------------------------------
-        You see that the tunnel splits into two up ahead!
-        Which do you choose? 
-        (1) Go left
-        (2) Go right
-        (3) Go back
-        (x) Exit to main menu
-                """
-        )
+        slow_text(fork_text)
         outcome = None
         while not outcome:
-            choice = input("Enter your choice: (1, 2, 3, or x): ")
+            choice = print_options(fork_room)
+
             if choice == "1":
                 outcome = "left"
             elif choice == "2":
@@ -179,19 +151,16 @@ class Room:
                 print("Not a valid response!")
         return outcome
 
-    def treasure_room(self, player, treasure=None,user=None):
-
+    def treasure_room(self, player, treasure=None, user=None):
         """
         Run upon entering treasure room
         """
         if self.first_time:
-            slow_text(
-                "You've found a small chamber. A dead end. However, you spot a treasure chest hidden near the back of the room! Will you open it?"
-            )
+            slow_text(treasure_text_first_time)
             self.first_time = False
-            # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
+        # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
-            print("You return to the dead end chamber for some reason")
+            slow_text(treasure_text_after_first)
 
         outcome = None
         while not outcome:
@@ -252,9 +221,9 @@ class Room:
             print(f"New room")
             return new_room
 
-    def run_room(self,user=None, player=None, enemy=None, treasure=None):
+    def run_room(self, user=None, player=None, enemy=None, treasure=None):
         """Runs the relevant loop while user is inside a room"""
-        
+
         if self.type == "start":
             outcome = self.starting_room()
         elif self.type == "fork":
