@@ -20,6 +20,7 @@ class Room:
         self.level = level
         self.enemy = enemy
         self.treasure = treasure
+        self.encounter = None
         self.first_time = True
         self.adjacent_rooms = {
             "previous": previous_room,
@@ -30,8 +31,8 @@ class Room:
         Room.all.append(self)
         # QUESTION - SSOT, should room only save next rooms? Find previous room with lookup?
 
-    # def __repr__(self):
-    #     return f"{self.type} room on level {self.level}"
+    def __repr__(self):
+        return f"{self.type} room on level {self.level}"
 
     @classmethod
     def reset_rooms(cls):
@@ -124,13 +125,14 @@ class Room:
             self.enemy = Enemy.create_from_db(self.level)
             print(f"New {self.enemy} created!")  # DEBUG
         if self.first_time:
-            new_encounter = Encounter(user=user, enemy=self.enemy)
+            self.encounter = Encounter(user=user, enemy=self.enemy)
+            self.first_time = False
 
         (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
 
-        if enemy_defeated:
+        if enemy_defeated and not self.encounter.defeated:
             # print(f"Adding encounter between {user.username} and {self.enemy.name}")
-            new_encounter.update_after_defeat()
+            self.encounter.update_after_defeat()
 
         return outcome
 
@@ -163,7 +165,6 @@ class Room:
         if self.first_time:
             slow_text(treasure_text_first_time)
             self.first_time = False
-        # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
             print("You return to the dead end chamber for some reason")
         
@@ -189,26 +190,19 @@ class Room:
                             "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
                         )
                         player.attack += 2
-                        # deciding = False
-                        # outcome = "previous"
+                        
                     elif rand_chest == 2:
                         slow_text(
                             "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
                         )
                         player.health += 1
-                        # deciding = False
-                        # outcome = "previous"
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
-                        # deciding = False
-                        # outcome = "previous"
                     elif rand_chest == 4:
                         slow_text(
                             "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
                         )
                         player.health -= 2
-                        # deciding = False
-                        # outcome = "previous"
                     self.treasure = False
                     deciding = False
                     outcome = "previous"
