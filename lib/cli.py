@@ -2,7 +2,7 @@ import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
-from helpers import DEBUGGING, VICTORY_LEVEL
+from helpers import DEBUGGING, VICTORY_LEVEL, WINDOW_WIDTH, debug_print
 
 from prints.print_formats import *
 import time
@@ -122,20 +122,7 @@ def view_account_details_menu(current_user):
     print(f"Times Played: {account_info[4]}")
     print(f"Times Won: {account_info[5]}")
 
-def view_enemy_encounters(user):
-    
-    CONN = sqlite3.connect("./lib/db/cave_crawler.db")
-    CURSOR = CONN.cursor()
-    sql = f"""
-        SELECT DISTINCT enemies.name
-        FROM enemies
-        INNER JOIN encounters
-        ON enemies.id = encounters.enemy
-        WHERE encounters.user = {user.id}
-        AND encounters.defeated = TRUE 
-    """
-    defeated_enemies = CURSOR.execute(sql).fetchall()
-    print(f'Defeated Enemies: {defeated_enemies}')
+
     
 
 
@@ -151,13 +138,13 @@ def mainGame(current_user):
         ##### DEBUGGING
         if DEBUGGING:
             print(" ")
-            # print(f"player.health: {player.health}")
-            # print(f"player.attack: {player.attack}")
-            print(" "*80 + f"current_room: {current_room}")
-            print(" "*80 + f"open_paths: {Room.open_paths}")
+            # debug_print(f"player.health: {player.health}")
+            # debug_print(f"player.attack: {player.attack}")
+            debug_print(f"current_room: {current_room}")
+            debug_print(f"open_paths: {Room.open_paths}")
         #####
 
-        if current_room.level != 0:
+        if current_room.level != 0 or not current_room.first_time:
             print(
                 f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
             )
@@ -197,7 +184,7 @@ def mainGame(current_user):
     
 
 # logged in, sub menu
-def subMenu(current_user):
+def subMenu(current_user): 
     current_user = current_user
     menu_looping = True
 
@@ -209,11 +196,14 @@ def subMenu(current_user):
             mainGame(current_user)
         elif choice == "2":
             print_header(account_details_header)
-            print(f"High Score: {current_user.high_score}")
-            print(f"Times Played: {current_user.times_played}")
-            print(f"Times Won: {current_user.times_won}")
+            current_user.view_account_details(width=WINDOW_WIDTH)
+            #  print(f"High Score: {current_user.high_score}")
+            # print(f"Times Played: {current_user.times_played}")
+            # print(f"Times Won: {current_user.times_won}")
+            # input("Press any key to continue: ")
         elif choice == "3":
-            view_enemy_encounters(current_user)
+            current_user.view_enemy_encounters(width=WINDOW_WIDTH)
+            #view_enemy_encounters(current_user)
             pass
         elif choice == "x":
             print("\nLogging out...")
@@ -240,3 +230,8 @@ while looping:
         print("Exiting game...")
     else:
         print("Not a valid input!")
+
+
+
+
+

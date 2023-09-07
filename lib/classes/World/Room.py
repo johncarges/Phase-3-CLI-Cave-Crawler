@@ -4,7 +4,7 @@ from classes.encounter import Encounter
 from prints.print_formats import *
 from classes.World.enemy_encounter_event import enemy_encounter
 
-from helpers import DEBUGGING
+from helpers import DEBUGGING, debug_print
 
 
 
@@ -98,6 +98,7 @@ class Room:
 
         else:
             slow_text(starting_text_after_first)
+            
 
         outcome = None
         while not outcome:
@@ -225,7 +226,7 @@ class Room:
             ]  # if room has already been explored, (self.adjacent_rooms[path] not None) return this room
         else:
             new_room = Room.create_new_room(self.level + 1, previous_room=self, path=path)
-            print(f"New room")
+            debug_print(f"New room")
             return new_room
 
     def run_room(self, user=None, player=None, enemy=None, treasure=None):
