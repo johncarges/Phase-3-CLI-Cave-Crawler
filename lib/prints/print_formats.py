@@ -1,8 +1,7 @@
 import time
 import re
+from helpers import DEBUGGING, WINDOW_WIDTH
 
-WINDOW_WIDTH = 36
-DEBUGGING = True
 
 
 """
@@ -126,6 +125,22 @@ def print_header(header):
     print("|" + "{:^{}s}".format(header, WINDOW_WIDTH - 2) + "|")
     print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
 
+# prints an empty line, "types" out the text, prints another empty line
+# TALK ABOUT WHERE TO PUT THIS/IF WE EVEN WANT IT.
+def slow_text(text, delay=0.03):
+    if DEBUGGING:
+        print(text)
+    else:
+        print()
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+
+        for sentence in sentences:
+            for char in sentence:
+                print(char, end="", flush=True)
+                time.sleep(delay)
+            print()
+            time.sleep(0.5)
+
 
 hiking_text = "Your day begins with a peaceful hike through the forest. Surrounded by the serenity of nature, you follow a winding trail deeper into the wilderness. As you venture further, a hidden entrance to a cave catches your eye, its mysteries drawing you in. With only your flashlight to light the way, you enter the cool, dimly lit cavern and begin to explore. But, in a twist of fate, a powerful force strikes the back of your head, plunging you into darkness."
 waking_up_text = "When you awake, disoriented and alone, you find yourself deep underground. The feeble glow of your flashlight reveals the harsh reality of your situation. Beside you lays a rusty sword, worn by time. Your journey begins here and your survival depends on the choices you make."
@@ -159,7 +174,7 @@ if __name__ == "__main__":
     while looping:
         choice = print_menu(test_menu)[0]
         if choice == "1":
-            menu = sign_up_menu_dict
+            pass
         elif choice == "2":
             menu = main_menu_dict
         elif choice == "3":

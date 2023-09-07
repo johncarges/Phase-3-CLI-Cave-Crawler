@@ -1,8 +1,11 @@
 from random import randint
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
-from prints.print_formats import *
+from prints.print_formats import print_menu, slow_text
 from classes.World.enemy_encounter_event import enemy_encounter
+
+from helpers import DEBUGGING
+
 
 
 class Room:
@@ -12,7 +15,7 @@ class Room:
     start_room = None
     open_paths = 3
 
-    def __init__(self, level, type=None, previous_room=None, enemy=None, treasure=None):
+    def __init__(self, level, type=None, previous_room=None, enemy=None, treasure=True):
         self.type = type
         self.level = level
         self.enemy = enemy
@@ -33,8 +36,9 @@ class Room:
     @classmethod
     def reset_rooms(cls):
         cls.all = []
-        cls.open_paths = 3
-        start_room = None
+        cls.open_paths = 3 
+        cls.start_room = None
+
 
     @classmethod
     def create_new_room(cls, level, previous_room, path):
@@ -151,18 +155,23 @@ class Room:
                 print("Not a valid response!")
         return outcome
 
-    def treasure_room(self, player, treasure=None, user=None):
+    def treasure_room(self, player):
+
         """
-        Run upon entering treasure room
+        Run upon entering treasure room - called on treasure room instance
         """
         if self.first_time:
             slow_text(treasure_text_first_time)
             self.first_time = False
         # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
-            slow_text(treasure_text_after_first)
+            print("You return to the dead end chamber for some reason")
+        if self.treasure:
+            outcome = None
+        else:
+            print("There's nothing to see here, so you return to the previous room")
+            return "previous"
 
-        outcome = None
         while not outcome:
             deciding = True
 
@@ -178,27 +187,29 @@ class Room:
                             "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
                         )
                         player.attack += 2
-                        deciding = False
-                        outcome = "previous"
+                        # deciding = False
+                        # outcome = "previous"
                     elif rand_chest == 2:
                         slow_text(
                             "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
                         )
                         player.health += 1
-                        deciding = False
-                        outcome = "previous"
+                        # deciding = False
+                        # outcome = "previous"
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
-                        deciding = False
-                        outcome = "previous"
+                        # deciding = False
+                        # outcome = "previous"
                     elif rand_chest == 4:
                         slow_text(
                             "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
                         )
                         player.health -= 2
-                        deciding = False
-                        outcome = "previous"
-
+                        # deciding = False
+                        # outcome = "previous"
+                    self.treasure = False
+                    deciding = False
+                    outcome = "previous"
                 elif decision == "n":
                     slow_text(
                         "You choose to leave the chest untouched and return to the previous area."
@@ -207,8 +218,8 @@ class Room:
                     outcome = "previous"
                 else:
                     print("\nNot a valid input!")
-
-        return outcome
+        input("Enter any key to continue")
+        return outcome # could just be return "previous" ?
 
     def exit_room(self, path):
         """(current room, path choice -> room (could be new or already visited) )"""
