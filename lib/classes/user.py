@@ -1,6 +1,7 @@
 import sqlite3
 
 CONN = sqlite3.connect("./lib/db/cave_crawler.db")
+CONN_MAX_AGE = 200
 CURSOR = CONN.cursor()
 
 
@@ -81,12 +82,6 @@ class User:
         else:
             return password_input
 
-    # @classmethod
-    # def on_successful_login(cls, username):
-    #     sql = f"SELECT * FROM users WHERE username = '{username}'"
-    #     account_info = CURSOR.execute(sql).fetchone()
-    #     return account_info
-
     @classmethod
     def on_successful_login(cls, username, password):
         sql = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
@@ -99,6 +94,13 @@ class User:
         sql = f"UPDATE users SET high_score = '{high_score}', times_played = '{times_played + 1}', times_won = '{times_won}' WHERE username = '{username}' AND password = '{password}'"
         CURSOR.execute(sql)
         CONN.commit()
+
+    @classmethod
+    def retrieve_account_details(cls, username, password):
+        sql = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+        account_info = CURSOR.execute(sql).fetchone()
+
+        return account_info
 
     ### use to reset account details (sqlite3, .open file-path)
     # sql = f"UPDATE users SET high_score = 0, times_played = 0, times_won = 0 WHERE username = 'breelle' AND password = 'isawesome'"
