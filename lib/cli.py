@@ -2,7 +2,7 @@ import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
-from helpers import DEBUGGING, VICTORY_LEVEL, WINDOW_WIDTH
+from helpers import DEBUGGING, VICTORY_LEVEL, WINDOW_WIDTH, debug_print
 
 from prints.print_formats import *
 import time
@@ -113,21 +113,6 @@ def view_log_in_menu():
     return current_user
 
 
-def view_enemy_encounters(user):
-    CONN = sqlite3.connect("./lib/db/cave_crawler.db")
-    CURSOR = CONN.cursor()
-    sql = f"""
-        SELECT DISTINCT enemies.name
-        FROM enemies
-        INNER JOIN encounters
-        ON enemies.id = encounters.enemy
-        WHERE encounters.user = {user.id}
-        AND encounters.defeated = TRUE 
-    """
-    defeated_enemies = CURSOR.execute(sql).fetchall()
-    print(f"Defeated Enemies: {defeated_enemies}")
-
-
 def mainGame(current_user):
     player = Player()
     high_score = current_user.high_score
@@ -139,13 +124,13 @@ def mainGame(current_user):
     while game_looping:
         ##### DEBUGGING
         if DEBUGGING:
-            # print(f"player.health: {player.health}")
-            # print(f"player.attack: {player.attack}")
-            # print(f"\ncurrent_room: {current_room}")
-            # print(f"open_paths: {Room.open_paths}")
-            pass
+            print(" ")
+            # debug_print(f"player.health: {player.health}")
+            # debug_print(f"player.attack: {player.attack}")
+            debug_print(f"current_room: {current_room}")
+            debug_print(f"open_paths: {Room.open_paths}")
         #####
-
+       
         if current_room.level != 0 or not current_room.first_time:
             print_line()
             print(
@@ -161,7 +146,7 @@ def mainGame(current_user):
                 user=current_user, player=player
             )  # return previous, exit, left, straight, right
 
-        if new_outcome == "exit":
+        if new_outcome in ["exit", "game over"]:
             highest_level_reached = current_room.level
 
             if current_room.level != VICTORY_LEVEL:
@@ -190,13 +175,14 @@ def mainGame(current_user):
             print(f"High Score: {high_score}")
             time.sleep(1)
             game_looping = False
+        
 
         else:
             current_room = current_room.exit_room(new_outcome)
 
 
 # logged in, sub menu
-def subMenu(current_user):
+def subMenu(current_user): 
     current_user = current_user
     menu_looping = True
 
@@ -204,6 +190,7 @@ def subMenu(current_user):
         choice = print_menu(sub_menu_dict)
 
         if choice == "1":
+            Room.reset_rooms()
             mainGame(current_user)
         elif choice == "2":
             # print_header(account_details_header)
@@ -232,8 +219,15 @@ def subMenu(current_user):
             )
             print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
             print("                            ")
+#             print_header(account_details_header)
+#             current_user.view_account_details(width=WINDOW_WIDTH)
+            #  print(f"High Score: {current_user.high_score}")
+            # print(f"Times Played: {current_user.times_played}")
+            # print(f"Times Won: {current_user.times_won}")
+            # input("Press any key to continue: ")
         elif choice == "3":
-            view_enemy_encounters(current_user)
+            current_user.view_enemy_encounters(width=WINDOW_WIDTH)
+            #view_enemy_encounters(current_user)
             pass
         elif choice == "x":
             print("\nLogging out...")
@@ -262,3 +256,8 @@ while looping:
         print("Exiting game...")
     else:
         print("Not a valid input!")
+
+
+
+
+

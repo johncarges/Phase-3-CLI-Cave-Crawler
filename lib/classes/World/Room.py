@@ -4,7 +4,7 @@ from classes.encounter import Encounter
 from prints.print_formats import *
 from classes.World.enemy_encounter_event import enemy_encounter
 
-from helpers import DEBUGGING
+from helpers import DEBUGGING, debug_print
 
 
 class Room:
@@ -19,6 +19,7 @@ class Room:
         self.level = level
         self.enemy = enemy
         self.treasure = treasure
+        self.encounter = None
         self.first_time = True
         self.adjacent_rooms = {
             "previous": previous_room,
@@ -29,8 +30,8 @@ class Room:
         Room.all.append(self)
         # QUESTION - SSOT, should room only save next rooms? Find previous room with lookup?
 
-    # def __repr__(self):
-    #     return f"{self.type} room on level {self.level}"
+    def __repr__(self):
+        return f"{self.type} room on level {self.level}"
 
     @classmethod
     def reset_rooms(cls):
@@ -96,6 +97,7 @@ class Room:
 
         else:
             slow_text(starting_text_after_first)
+            
 
         outcome = None
         while not outcome:
@@ -123,13 +125,14 @@ class Room:
             self.enemy = Enemy.create_from_db(self.level)
             print(f"New {self.enemy} created!")  # DEBUG
         if self.first_time:
-            new_encounter = Encounter(user=user, enemy=self.enemy)
+            self.encounter = Encounter(user=user, enemy=self.enemy)
+            self.first_time = False
 
         (outcome, enemy_defeated) = enemy_encounter(user, player, enemy=self.enemy, room=self)
 
-        if enemy_defeated:
+        if enemy_defeated and not self.encounter.defeated:
             # print(f"Adding encounter between {user.username} and {self.enemy.name}")
-            new_encounter.update_after_defeat()
+            self.encounter.update_after_defeat()
 
         return outcome
 
@@ -161,13 +164,13 @@ class Room:
         if self.first_time:
             slow_text(treasure_room_first)
             self.first_time = False
-        # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
             slow_text(treasure_room_again)
         if self.treasure:
             outcome = None
         else:
             print("There's nothing to see here, so you return to the previous room.")
+            input("Enter any key to continue")
             return "previous"
 
         while not outcome:
@@ -185,26 +188,19 @@ class Room:
                             "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
                         )
                         player.attack += 2
-                        # deciding = False
-                        # outcome = "previous"
+                        
                     elif rand_chest == 2:
                         slow_text(
                             "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
                         )
                         player.health += 1
-                        # deciding = False
-                        # outcome = "previous"
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
-                        # deciding = False
-                        # outcome = "previous"
                     elif rand_chest == 4:
                         slow_text(
                             "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
                         )
                         player.health -= 2
-                        # deciding = False
-                        # outcome = "previous"
                     self.treasure = False
                     deciding = False
                     outcome = "previous"
@@ -227,7 +223,7 @@ class Room:
             ]  # if room has already been explored, (self.adjacent_rooms[path] not None) return this room
         else:
             new_room = Room.create_new_room(self.level + 1, previous_room=self, path=path)
-            print(f"New room")
+            debug_print(f"New room")
             return new_room
 
     def run_room(self, user=None, player=None, enemy=None, treasure=None):
