@@ -2,7 +2,7 @@ import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
-from helpers import DEBUGGING, VICTORY_LEVEL
+from helpers import DEBUGGING, VICTORY_LEVEL, WINDOW_WIDTH
 
 from prints.print_formats import *
 import time
@@ -113,17 +113,7 @@ def view_log_in_menu():
     return current_user
 
 
-def view_account_details_menu(current_user):
-    print_header(account_details_header)
-
-    account_info = current_user.on_successful_login(current_user)
-
-    print(f"High Score: {account_info[3]}")
-    print(f"Times Played: {account_info[4]}")
-    print(f"Times Won: {account_info[5]}")
-
 def view_enemy_encounters(user):
-    
     CONN = sqlite3.connect("./lib/db/cave_crawler.db")
     CURSOR = CONN.cursor()
     sql = f"""
@@ -135,8 +125,7 @@ def view_enemy_encounters(user):
         AND encounters.defeated = TRUE 
     """
     defeated_enemies = CURSOR.execute(sql).fetchall()
-    print(f'Defeated Enemies: {defeated_enemies}')
-    
+    print(f"Defeated Enemies: {defeated_enemies}")
 
 
 def mainGame(current_user):
@@ -152,13 +141,15 @@ def mainGame(current_user):
         if DEBUGGING:
             # print(f"player.health: {player.health}")
             # print(f"player.attack: {player.attack}")
-            print(f"\ncurrent_room: {current_room}")
-            print(f"open_paths: {Room.open_paths}")
+            # print(f"\ncurrent_room: {current_room}")
+            # print(f"open_paths: {Room.open_paths}")
+            pass
         #####
 
-        if current_room.level != 0:
+        if current_room.level != 0 or not current_room.first_time:
+            print_line()
             print(
-                f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
+                f"[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ] \n"
             )
 
         if current_room.level == VICTORY_LEVEL:
@@ -166,13 +157,23 @@ def mainGame(current_user):
             new_outcome = "exit"
             current_user.times_won += 1
         else:
-            new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
+            new_outcome = current_room.run_room(
+                user=current_user, player=player
+            )  # return previous, exit, left, straight, right
 
         if new_outcome == "exit":
             highest_level_reached = current_room.level
 
             if current_room.level != VICTORY_LEVEL:
                 print_header(game_over_header)
+
+                current_user.update_account_details(
+                    current_user.username,
+                    current_user.password,
+                    high_score,
+                    current_user.times_played,
+                    current_user.times_won,
+                )
 
                 print(f"You reached level {highest_level_reached}!")
 
@@ -192,7 +193,7 @@ def mainGame(current_user):
 
         else:
             current_room = current_room.exit_room(new_outcome)
-    
+
 
 # logged in, sub menu
 def subMenu(current_user):
@@ -205,10 +206,32 @@ def subMenu(current_user):
         if choice == "1":
             mainGame(current_user)
         elif choice == "2":
-            print_header(account_details_header)
-            print(f"High Score: {current_user.high_score}")
-            print(f"Times Played: {current_user.times_played}")
-            print(f"Times Won: {current_user.times_won}")
+            # print_header(account_details_header)
+
+            # print(f"High Score: {current_user.high_score}")
+            # print(f"Times Played: {current_user.times_played}")
+            # print(f"Times Won: {current_user.times_won}")
+            print("                            ")
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print("|" + "{:^{}s}".format("ACCOUNT DETAILS", WINDOW_WIDTH - 2) + "|")
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print(
+                "| "
+                + "{:<{}s}".format(f"High Score: {current_user.high_score}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print(
+                "| "
+                + "{:<{}s}".format(f"Times Played: {current_user.times_played}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print(
+                "| "
+                + "{:<{}s}".format(f"Times Won: {current_user.times_won}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print("                            ")
         elif choice == "3":
             view_enemy_encounters(current_user)
             pass
@@ -226,10 +249,12 @@ while looping:
 
     if choice == "1":
         current_user = view_sign_up_menu()
+        time.sleep(1)
         if current_user != None:
             subMenu(current_user)
     elif choice == "2":
         current_user = view_log_in_menu()
+        time.sleep(1)
         if current_user != None:
             subMenu(current_user)
     elif choice == "x":

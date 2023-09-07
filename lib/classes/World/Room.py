@@ -1,11 +1,10 @@
 from random import randint
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
-from prints.print_formats import print_menu, slow_text
+from prints.print_formats import *
 from classes.World.enemy_encounter_event import enemy_encounter
 
 from helpers import DEBUGGING
-
 
 
 class Room:
@@ -36,9 +35,8 @@ class Room:
     @classmethod
     def reset_rooms(cls):
         cls.all = []
-        cls.open_paths = 3 
+        cls.open_paths = 3
         cls.start_room = None
-
 
     @classmethod
     def create_new_room(cls, level, previous_room, path):
@@ -78,7 +76,8 @@ class Room:
         Run upon entering or starting in initial room
         """
         if self.first_time:
-            slow_text("\nBeginning your adventure...")
+            print_line()
+            slow_text("Beginning your adventure...")
             slow_text(
                 "\nWould you like to skip the narrative introduction? (Recommended for returning players.)"
             )
@@ -138,7 +137,7 @@ class Room:
         """
         Run upon entering fork in the road room
         """
-        slow_text(fork_text)
+        slow_text(fork_room_text)
         outcome = None
         while not outcome:
             choice = print_options(fork_room)
@@ -156,20 +155,19 @@ class Room:
         return outcome
 
     def treasure_room(self, player):
-
         """
         Run upon entering treasure room - called on treasure room instance
         """
         if self.first_time:
-            slow_text(treasure_text_first_time)
+            slow_text(treasure_room_first)
             self.first_time = False
         # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
-            print("You return to the dead end chamber for some reason")
+            slow_text(treasure_room_again)
         if self.treasure:
             outcome = None
         else:
-            print("There's nothing to see here, so you return to the previous room")
+            print("There's nothing to see here, so you return to the previous room.")
             return "previous"
 
         while not outcome:
@@ -219,7 +217,7 @@ class Room:
                 else:
                     print("\nNot a valid input!")
         input("Enter any key to continue")
-        return outcome # could just be return "previous" ?
+        return outcome  # could just be return "previous" ?
 
     def exit_room(self, path):
         """(current room, path choice -> room (could be new or already visited) )"""
