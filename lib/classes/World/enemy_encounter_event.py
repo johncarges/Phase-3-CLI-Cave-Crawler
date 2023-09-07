@@ -77,7 +77,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 else:
                     print_out.append(f"\nThe {enemy.name} attacks you back!")
                     player.health -= enemy.attack
-                    if player.health < 0:
+                    if player.health <= 0:
                         outcome = "game over"
                         break
             elif choice == "2":
