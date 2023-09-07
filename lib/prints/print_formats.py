@@ -3,6 +3,7 @@ import re
 from helpers import DEBUGGING, WINDOW_WIDTH
 
 
+
 """
 +--------------------------+
 | WELCOME TO CAVE CRAWLER! | #HEADER
@@ -37,20 +38,15 @@ sub_menu_dict = {
 
 battle_menu_dict = {
     "header": "BATTLE",
-    "options": {"1": "Attack", "2": "Sneak", "3": "Run", "x": "Exit Game"},
+    "options": {"1": "Attack", "2": "Sneak", "3": "Run", "x": "Exit game"},
     "input_header": "Input your choice: ",
 }
 
 
 defeated_enemy_menu_dict = {
-    "header": "What will you do?",
-    "options": {
-        "1": "Go Forward",
-        "2": "Go Back",
-        "x": "Exit Game" 
-    },
-    "input_header": None
-
+    "header": "ENEMY DEFEATED",
+    "options": {"1": "Go straight", "2": "Go back", "x": "Exit game"},
+    "input_header": "Input your choice: ",
 }
 
 test_menu = {
@@ -79,6 +75,42 @@ def print_menu(menu_dict):
         return choice
 
 
+starting_room = {
+    "options": {"1": "Turn left", "2": "Go straight", "3": "Turn right", "x": "Quit game"},
+    "input_header": "Input your choice: ",
+}
+
+# enemy_encounter = {
+#     "options": {"1": "Attack enemy", "2": "Sneak past", "3": "Run away", "x": "Quit game"},
+#     "input_header": "Input your choice: ",
+# }
+
+# after_enemy = {
+#     "options": {"1": "Attack enemy", "2": "Sneak past", "3": "Run away", "x": "Quit game"},
+#     "input_header": "Input your choice: ",
+# }
+
+fork_room = {
+    "options": {"1": "Turn left", "2": "Turn right", "3": "Go back", "x": "Quit game"},
+    "input_header": "Input your choice: ",
+}
+
+
+def print_options(options_dict):
+    print()
+    if options_dict["options"]:
+        for key, value in options_dict["options"].items():
+            string = f"{key}. {value}"
+            print(string)
+    print()
+    if options_dict["input_header"]:
+        print(options_dict["input_header"], end="")
+        choice = input()
+        choice.lower()
+
+    return choice
+
+
 sign_up_header = "SIGN UP"
 log_in_header = "LOG IN"
 login_success_header = "LOGIN SUCCESSFUL"
@@ -95,6 +127,33 @@ def print_header(header):
 
 # prints an empty line, "types" out the text, prints another empty line
 # TALK ABOUT WHERE TO PUT THIS/IF WE EVEN WANT IT.
+def slow_text(text, delay=0.03):
+    if DEBUGGING:
+        print(text)
+    else:
+        print()
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+
+        for sentence in sentences:
+            for char in sentence:
+                print(char, end="", flush=True)
+                time.sleep(delay)
+            print()
+            time.sleep(0.5)
+
+
+hiking_text = "Your day begins with a peaceful hike through the forest. Surrounded by the serenity of nature, you follow a winding trail deeper into the wilderness. As you venture further, a hidden entrance to a cave catches your eye, its mysteries drawing you in. With only your flashlight to light the way, you enter the cool, dimly lit cavern and begin to explore. But, in a twist of fate, a powerful force strikes the back of your head, plunging you into darkness."
+waking_up_text = "When you awake, disoriented and alone, you find yourself deep underground. The feeble glow of your flashlight reveals the harsh reality of your situation. Beside you lays a rusty sword, worn by time. Your journey begins here and your survival depends on the choices you make."
+starting_text_first_time = (
+    "As your eyes adjust, you see three tunnels ahead of you. Which will you take?"
+)
+starting_text_after_first = "You find yourself back where you started. Which path will you take?"
+# enemy_text = "will change based on enemy..."
+fork_text = "You arrive in a dimly lit chamber. Before you, two tunnels beckon."
+treasure_text_first_time = "You find a small room. A dead end. However, you spot a treasure chest hidden near the back of the room! Will you open it?"
+treasure_text_after_first = "You return to the dead end room with the chest."
+
+
 def slow_text(text, delay=0.03):
     if DEBUGGING:
         print(text)

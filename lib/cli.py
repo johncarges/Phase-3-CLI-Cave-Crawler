@@ -8,10 +8,8 @@ from prints.print_formats import *
 import time
 
 
-
 looping = True
 high_score = 0
-
 
 
 # print methods
@@ -38,6 +36,7 @@ def print_cave_outline():
     print("|     \___)_/\_/\__/(____)   \___|__\_)_/\_(_/\_)____(____|__\_)               \ |")
     print("+--------------------------------------------------------------------------------+")
     time.sleep(1)
+
 
 # menus
 def view_sign_up_menu():
@@ -93,7 +92,12 @@ def view_log_in_menu():
     account_info = User.on_successful_login(username, password)
 
     current_user = User(
-        account_info[1], account_info[2], account_info[3], account_info[4], account_info[5], id=account_info[0]
+        account_info[1],
+        account_info[2],
+        account_info[3],
+        account_info[4],
+        account_info[5],
+        id=account_info[0],
     )
 
     # 0 = id, 1 = username, 2 = password, 3 = high score, 4 = times played, 5 = times won
@@ -102,7 +106,8 @@ def view_log_in_menu():
     print_header(login_success_header)
     print(f"\nWelcome back, {account_info[1].upper()}!")
     print(f"\nHigh Score: {account_info[3]}")
-    print(f"Times Played: {account_info[4]}")
+    # add one to compensate for database not refreshing...
+    print(f"Times Played: {account_info[4] + 1}")
     print(f"Times Won: {account_info[5]}")
 
     return current_user
@@ -111,9 +116,11 @@ def view_log_in_menu():
 def view_account_details_menu(current_user):
     print_header(account_details_header)
 
-    print(f"High Score: {current_user.high_score}")
-    print(f"Times Played: {current_user.times_played}")
-    print(f"Times Won: {current_user.times_won}")
+    account_info = current_user.on_successful_login(current_user)
+
+    print(f"High Score: {account_info[3]}")
+    print(f"Times Played: {account_info[4]}")
+    print(f"Times Won: {account_info[5]}")
 
 def view_enemy_encounters(user):
     
@@ -143,12 +150,16 @@ def mainGame(current_user):
     while game_looping:
         ##### DEBUGGING
         if DEBUGGING:
-            #print(f"player.health: {player.health}")
-            #print(f"player.attack: {player.attack}")
-            print(f"current_room: {current_room}")
+            # print(f"player.health: {player.health}")
+            # print(f"player.attack: {player.attack}")
+            print(f"\ncurrent_room: {current_room}")
             print(f"open_paths: {Room.open_paths}")
         #####
 
+        if current_room.level != 0:
+            print(
+                f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
+            )
 
         if current_room.level == VICTORY_LEVEL:
             print_header(game_won_header)
@@ -176,6 +187,7 @@ def mainGame(current_user):
                 current_user.times_won,
             )
             print(f"High Score: {high_score}")
+            time.sleep(1)
             game_looping = False
 
         else:
