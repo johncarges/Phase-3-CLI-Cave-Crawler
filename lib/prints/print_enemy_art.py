@@ -1,24 +1,11 @@
-# no top/side lines yet
-
-# bat: 7
-# slim: 7
-# centaur: 10
-# griffin: 8
-# phoenix: 6
-# skeleton: 7
-# unicorn: 8
-# bear: 10
-# big cat: 5
-
-
 def print_bat():
-    print(r"     =/\                 /\=     ")
-    print(r"     /  '._   (\_/)   _.'/ \     ")
-    print(r"    / .''._'--(o.o)--'_.''. \    ")
-    print(r"   /.' _/ |`'=/ ' \='`| \_ `.\   ")
-    print(r"  /` .' `\;-,'\___/',-;/` '. '\  ")
-    print(r" /.-'       `\(-V-)/`       `-.\ ")
-    print(r' `            "   "            ` ')
+    print(r"    =/\                 /\=     ")
+    print(r"    /  '._   (\_/)   _.'/ \     ")
+    print(r"   / .''._'--(o.o)--'_.''. \    ")
+    print(r"  /.' _/ |`'=/ ' \='`| \_ `.\   ")
+    print(r" /` .' `\;-,'\___/',-;/` '. '\  ")
+    print(r"/.-'       `\(-V-)/`       `-.\ ")
+    print(r'`            "   "            ` ')
 
 
 def print_slime():
@@ -53,17 +40,6 @@ def print_griffin():
     print(r"       \_\  >__/    \((    ")
     print(r"      _/_/ /` _\_   |))    ")
     print(r"     /_/__(  /______/`     ")
-
-
-def print_griffin_2():
-    print(r"       _          (`-.  ")
-    print(r"       \`----.    ) ^_`)")
-    print(r",__     \__   `\_/  ( ` ")
-    print(r" \_\      \__  `|   }   ")
-    print(r"   \\  .--' \__/    }   ")
-    print(r"    ))/   \__,<  /_/    ")
-    print(r"    ((|  _/_/ `\ \_\_   ")
-    print(r"     `\_____\\  )__\_\  ")
 
 
 def print_phoenix():
@@ -128,3 +104,37 @@ def print_ant():
     print(r"        (/    ()     \)'-._.-'   ")
     print(r"        ||    ||      \\         ")
     print(r"        ('    ('       ')        ")
+
+
+enemy_print = {
+    "Bat": print_bat,
+    "Slime": print_slime,
+    "Centaur": print_centaur,
+    "Griffin": print_griffin,
+    "Phoenix": print_phoenix,
+    "Skeleton": print_skeleton,
+    "Unicorn": print_unicorn,
+    "Bear": print_bear,
+    "Big Cat": print_cat,
+    "Giant Ant": print_ant,
+}
+
+
+def chest_sword():
+    print(r"     /                     ")
+    print(r" O===[====================-")
+    print(r"     \                     ")
+
+
+def chest_potion():
+    print(r"  .-. ")
+    print(r" .' `.")
+    print(r" | + |")
+    print(r" `._.'")
+
+
+def chest_mist():
+    print(r" -_'-. _          ")
+    print(r"-(    ) ),--.     ")
+    print(r"             )-._ ")
+    print(r"_________________)")

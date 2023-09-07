@@ -205,6 +205,12 @@ def create_encounter_table():
     CURSOR.execute(sql)
 
 
+def delete_encounters_from_db():
+    sql = "DELETE FROM encounters"
+    CURSOR.execute(sql)
+    CONN.commit()
+
+
 debug_menu_dict = {
     "header": "What do you wish to do?",
     "options": {
@@ -243,6 +249,7 @@ if __name__ == "__main__":
     # add_user_to_db(user_list)
     # create_enemy_table()
     # delete_enemy_from_db()
-    add_enemy_to_db(enemy_list)
+    # add_enemy_to_db(enemy_list)
     # create_encounter_table()
+    # delete_encounters_from_db()
     pass

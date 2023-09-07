@@ -2,6 +2,7 @@ from random import randint
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
 from prints.print_formats import *
+from prints.print_enemy_art import chest_mist, chest_potion, chest_sword
 from classes.World.enemy_encounter_event import enemy_encounter
 
 from helpers import DEBUGGING, debug_print
@@ -97,7 +98,6 @@ class Room:
 
         else:
             slow_text(starting_text_after_first)
-            
 
         outcome = None
         while not outcome:
@@ -170,7 +170,7 @@ class Room:
             outcome = None
         else:
             print("There's nothing to see here, so you return to the previous room.")
-            input("Enter any key to continue")
+            input("Press any key to continue: ")
             return "previous"
 
         while not outcome:
@@ -184,12 +184,14 @@ class Room:
                     rand_chest = randint(1, 4)
 
                     if rand_chest == 1:
+                        chest_sword()
                         slow_text(
                             "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
                         )
                         player.attack += 2
-                        
+
                     elif rand_chest == 2:
+                        chest_potion()
                         slow_text(
                             "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
                         )
@@ -197,6 +199,7 @@ class Room:
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
                     elif rand_chest == 4:
+                        chest_mist()
                         slow_text(
                             "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
                         )
@@ -212,7 +215,7 @@ class Room:
                     outcome = "previous"
                 else:
                     print("\nNot a valid input!")
-        input("Enter any key to continue")
+        input("Press any key to continue: ")
         return outcome  # could just be return "previous" ?
 
     def exit_room(self, path):
