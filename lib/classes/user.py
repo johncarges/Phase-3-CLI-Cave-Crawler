@@ -95,13 +95,6 @@ class User:
         CURSOR.execute(sql)
         CONN.commit()
 
-    @classmethod
-    def retrieve_account_details(cls, username, password):
-        sql = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-        account_info = CURSOR.execute(sql).fetchone()
-
-        return account_info
-
     ### use to reset account details (sqlite3, .open file-path)
     # sql = f"UPDATE users SET high_score = 0, times_played = 0, times_won = 0 WHERE username = 'breelle' AND password = 'isawesome'"
 
