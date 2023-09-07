@@ -150,10 +150,11 @@ def mainGame(current_user):
     while game_looping:
         ##### DEBUGGING
         if DEBUGGING:
+            print(" ")
             # print(f"player.health: {player.health}")
             # print(f"player.attack: {player.attack}")
-            print(f"\ncurrent_room: {current_room}")
-            print(f"open_paths: {Room.open_paths}")
+            print(" "*80 + f"current_room: {current_room}")
+            print(" "*80 + f"open_paths: {Room.open_paths}")
         #####
 
         if current_room.level != 0:
@@ -204,6 +205,7 @@ def subMenu(current_user):
         choice = print_menu(sub_menu_dict)
 
         if choice == "1":
+            Room.reset_rooms()
             mainGame(current_user)
         elif choice == "2":
             print_header(account_details_header)

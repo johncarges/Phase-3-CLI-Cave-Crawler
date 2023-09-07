@@ -16,25 +16,6 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     Also returns encounter outcome: victory, encounter, already encountered
     """
 
-    # if enemy.is_dead():
-    #     print_menu(
-    #         {
-    #             "header": f"You stand over the dead {enemy.name}",
-    #             "options": None,
-    #             "input_header": None,
-    #             "inputs": [],
-    #         }
-    #     )
-    # else:
-    #     print_menu(
-    #         {
-    #             "header": f"You come across an enemy {enemy.name}!",
-    #             "options": None,
-    #             "input_header": None,
-    #             "inputs": [],
-    #         }
-    #     )
-
     looping = True
     if enemy.is_dead():
         slow_text(f"You stand over the dead {enemy.name}.")
@@ -64,7 +45,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             print("\n")
             print_out = []
             if choice == "1":
-                print_out.append(f"You attack the {enemy.name}!")
+                print_out.append(f"You attack the {enemy.name}! You deal {player.attack} damage.")
                 enemy.health -= player.attack
                 if enemy.is_dead():
                     print_out.append(f"\nThe {enemy.name} is no more!")
@@ -75,7 +56,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                         user, player, enemy, enemy_defeated=enemy_defeated
                     )  # tricky little recursion :|
                 else:
-                    print_out.append(f"\nThe {enemy.name} attacks you back!")
+                    print_out.append(f"\nThe {enemy.name} attacks you back for {enemy.attack} hearts!")
                     player.health -= enemy.attack
                     if player.health <= 0:
                         outcome = "game over"
@@ -84,6 +65,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 coin = randint(0, 1)
                 if coin == 0:
                     print_out.append(f"\nYou successfully snuck by the {enemy.name}!")
+                    input("Press any key to continue: ")
                     outcome = "straight"
                     break
                 else:

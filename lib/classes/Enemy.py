@@ -1,7 +1,6 @@
 import sqlite3
 from random import randint
-CONN = sqlite3.connect("./lib/db/cave_crawler.db")
-CURSOR = CONN.cursor()
+
 
 class Enemy:
 
@@ -25,8 +24,10 @@ class Enemy:
             SELECT * FROM enemies
             WHERE level < {level}
         """
+        CONN = sqlite3.connect("./lib/db/cave_crawler.db")
+        CURSOR = CONN.cursor()
         possible_enemies = CURSOR.execute(sql).fetchall()
-        #print(possible_enemies)
+        CONN.close()
         index = randint(0, len(possible_enemies)-1)
         new_enemy = possible_enemies[index]
         return Enemy(
