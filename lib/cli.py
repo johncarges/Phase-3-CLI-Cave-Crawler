@@ -168,7 +168,7 @@ def mainGame(current_user):
         else:
             new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
 
-        if new_outcome == "exit":
+        if new_outcome in ["exit", "game over"]:
             highest_level_reached = current_room.level
 
             if current_room.level != VICTORY_LEVEL:
@@ -189,6 +189,7 @@ def mainGame(current_user):
             print(f"High Score: {high_score}")
             time.sleep(1)
             game_looping = False
+        
 
         else:
             current_room = current_room.exit_room(new_outcome)

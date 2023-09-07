@@ -154,19 +154,6 @@ treasure_text_first_time = "You find a small room. A dead end. However, you spot
 treasure_text_after_first = "You return to the dead end room with the chest."
 
 
-def slow_text(text, delay=0.03):
-    if DEBUGGING:
-        print(text)
-    else:
-        print()
-        sentences = re.split(r"(?<=[.!?])\s+", text)
-
-        for sentence in sentences:
-            for char in sentence:
-                print(char, end="", flush=True)
-                time.sleep(delay)
-            print()
-            time.sleep(0.5)
 
 
 if __name__ == "__main__":

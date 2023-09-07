@@ -1,7 +1,7 @@
 from random import randint
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
-from prints.print_formats import print_menu, slow_text
+from prints.print_formats import *
 from classes.World.enemy_encounter_event import enemy_encounter
 
 from helpers import DEBUGGING
@@ -166,10 +166,12 @@ class Room:
         # Implement check for treasure. First time, set self.treasure to True (or specific treasure). When collected, set to false
         else:
             print("You return to the dead end chamber for some reason")
+        
         if self.treasure:
             outcome = None
         else:
             print("There's nothing to see here, so you return to the previous room")
+            input("Enter any key to continue")
             return "previous"
 
         while not outcome:
