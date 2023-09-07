@@ -167,13 +167,13 @@ def mainGame(current_user):
             if current_room.level != VICTORY_LEVEL:
                 print_header(game_over_header)
 
-                current_user.update_account_details(
-                    current_user.username,
-                    current_user.password,
-                    high_score,
-                    current_user.times_played,
-                    current_user.times_won,
-                )
+                # current_user.update_account_details(
+                #     current_user.username,
+                #     current_user.password,
+                #     high_score,
+                #     current_user.times_played,
+                #     current_user.times_won,
+                # )
 
                 print(f"You reached level {highest_level_reached}!")
 
