@@ -188,6 +188,8 @@ treasure_room_first = TREASURE_TEXT_FIRST_TIME[randint(0, 3)]
 treasure_room_again = TREASURE_TEXT_AFTER_FIRST[randint(0, 3)]
 
 
+
+
 def slow_text(text, delay=0.03):
     if DEBUGGING:
         print(text)

@@ -59,7 +59,7 @@ def print_map(current_room):
     for room in Room.all:
         node = RoomNode(room)
         if room == current_room:
-            node.value = "Current"
+            node.value = "you"
     for node in RoomNode.all:
         for direction in ["left","straight","right"]:
             if direction in node.room.possible_directions():
