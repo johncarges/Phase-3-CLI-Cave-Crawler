@@ -2,11 +2,12 @@ import sqlite3
 from classes.player import Player
 from classes.user import User
 from classes.World.Room import Room
+from classes.World.Map import print_map
 from helpers import DEBUGGING, VICTORY_LEVEL, WINDOW_WIDTH, debug_print
 
 from prints.print_formats import *
 import time
-
+import ipdb
 
 looping = True
 high_score = 0
@@ -122,17 +123,13 @@ def view_account_details_menu(current_user):
     print(f"Times Played: {account_info[4]}")
     print(f"Times Won: {account_info[5]}")
 
-
-    
-
-
 def mainGame(current_user):
     player = Player()
-    high_score = current_user.high_score
     highest_level_reached = 0
 
     game_looping = True
     current_room = Room.create_starting_room()
+    current_user.times_played += 1
 
     while game_looping:
         ##### DEBUGGING
@@ -140,10 +137,10 @@ def mainGame(current_user):
             print(" ")
             # debug_print(f"player.health: {player.health}")
             # debug_print(f"player.attack: {player.attack}")
-            debug_print(f"current_room: {current_room}")
-            debug_print(f"open_paths: {Room.open_paths}")
+            # debug_print(f"current_room: {current_room}")
+            # debug_print(f"open_paths: {Room.open_paths}")
         #####
-
+        highest_level_reached = max(current_room.level,highest_level_reached)
         if current_room.level != 0 or not current_room.first_time:
             print(
                 f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
@@ -164,23 +161,26 @@ def mainGame(current_user):
 
                 print(f"You reached level {highest_level_reached}!")
 
-            if highest_level_reached > high_score:
-                high_score = highest_level_reached
+            if highest_level_reached > current_user.high_score:
+                current_user.high_score = highest_level_reached
 
             current_user.update_account_details(
                 current_user.username,
                 current_user.password,
-                high_score,
+                current_user.high_score,
                 current_user.times_played,
                 current_user.times_won,
             )
-            print(f"High Score: {high_score}")
+            print(f"High Score: {current_user.high_score}")
             time.sleep(1)
             game_looping = False
         
 
         else:
             current_room = current_room.exit_room(new_outcome)
+            print("")
+            print_map(current_room)
+            # ipdb.set_trace()
     
 
 # logged in, sub menu
@@ -197,14 +197,8 @@ def subMenu(current_user):
         elif choice == "2":
             print_header(account_details_header)
             current_user.view_account_details(width=WINDOW_WIDTH)
-            #  print(f"High Score: {current_user.high_score}")
-            # print(f"Times Played: {current_user.times_played}")
-            # print(f"Times Won: {current_user.times_won}")
-            # input("Press any key to continue: ")
         elif choice == "3":
             current_user.view_enemy_encounters(width=WINDOW_WIDTH)
-            #view_enemy_encounters(current_user)
-            pass
         elif choice == "x":
             print("\nLogging out...")
             menu_looping = False

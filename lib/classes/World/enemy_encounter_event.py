@@ -4,10 +4,6 @@ from classes.user import User
 from prints.print_formats import print_menu, battle_menu_dict, defeated_enemy_menu_dict, slow_text
 from random import randint
 
-user = User.sample_user()
-enemy = Enemy.create_from_db(level=10)
-player = Player()
-
 
 def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     """
@@ -15,6 +11,8 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     Returns direction: back, forward, game over, or quit.
     Also returns encounter outcome: victory, encounter, already encountered
     """
+
+    
 
     looping = True
     if enemy.is_dead():
@@ -64,18 +62,18 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             elif choice == "2":
                 coin = randint(0, 1)
                 if coin == 0:
-                    print_out.append(f"\nYou successfully snuck by the {enemy.name}!")
+                    print(f"You successfully snuck by the {enemy.name}!\n")
                     input("Press any key to continue: ")
                     outcome = "straight"
                     break
                 else:
-                    print_out.append(f"\nThe {enemy.name} sees you and attacks!")
+                    print(f"The {enemy.name} sees you and attacks!")
                     player.health -= enemy.attack
                     if player.health <= 0:
                         outcome = "game over"
                         break
             elif choice == "3":
-                print("\nYou decide to return to safety!")
+                print("You decide to return to safety!\n")
                 outcome = "previous"
                 break
             elif choice == "x":
@@ -86,5 +84,5 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             for item in print_out:
                 print(item)
 
-    print(f"outcome: {outcome}")
+    # print(f"outcome: {outcome}")
     return (outcome, enemy_defeated)

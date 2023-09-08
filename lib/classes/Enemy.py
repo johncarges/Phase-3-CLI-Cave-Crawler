@@ -22,7 +22,8 @@ class Enemy:
         based on current level"""
         sql = f"""
             SELECT * FROM enemies
-            WHERE level < {level}
+            WHERE level <= {level}
+            AND level >= {level-1}
         """
         CONN = sqlite3.connect("./lib/db/cave_crawler.db")
         CURSOR = CONN.cursor()

@@ -128,7 +128,12 @@ class User:
             ON enemies.id = encounters.enemy
             WHERE encounters.user = {self.id}
         """
-        encountered_enemies = [enemy[0] for enemy in CURSOR.execute(encountered_sql).fetchall()]
+        try:
+            encountered_enemies = [enemy[0] for enemy in CURSOR.execute(encountered_sql).fetchall()]
+        except:
+            print("You haven't seen any enemies yet!")
+            input("Enter any key to continue: ")
+            return
         defeated_sql = f"""
             SELECT DISTINCT enemies.name
             FROM enemies
@@ -147,9 +152,7 @@ class User:
                 enemy.append("x")
             else:
                 enemy.append(" ")
-        print(f"enemies_list = {enemies_list}")
-        print(f"encountered_enemies = {encountered_enemies}")
-        print(f"defeated_enemies = {defeated_enemies}")
+     
         print("")
         print("+" + "-"*21 
             + "+" + "-"*8
