@@ -96,7 +96,7 @@ def view_sign_up_menu():
             current_user = User(username, password)
             current_user.save_account()
             print(f"\nWelcome, {username.upper()}!")
-            print(f"\nHigh Score: 0")
+            # print(f"\nHigh Score: 0")
             deciding = False
         elif decision == "n":
             print("\nAccount creation canceled.")
@@ -140,7 +140,6 @@ def view_log_in_menu():
     return current_user
 
 
-
 def mainGame(current_user):
     player = Player()
     highest_level_reached = 0
@@ -169,7 +168,6 @@ def mainGame(current_user):
             )
 
         if current_room.level == VICTORY_LEVEL:
-            # print_header(game_won_header)
             print_escape_art()
             new_outcome = "exit"
             current_user.times_won += 1
@@ -180,8 +178,7 @@ def mainGame(current_user):
 
         if new_outcome in ["exit", "game over"]:
             if current_room.level != VICTORY_LEVEL:
-                # print_header(game_over_header)
-
+                highest_level_reached = max(current_room.level, highest_level_reached)
                 print()
                 print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
                 print("|" + "{:^{}s}".format("GAME OVER", WINDOW_WIDTH - 2) + "|")
@@ -196,8 +193,6 @@ def mainGame(current_user):
                 print("| " + "{:<{}s}".format(f" High Score: {high_score}", WINDOW_WIDTH - 3) + "|")
                 print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
 
-                # print(f"\nYou reached: Level {highest_level_reached}!")
-
             if highest_level_reached > current_user.high_score:
                 current_user.high_score = highest_level_reached
 
@@ -209,13 +204,12 @@ def mainGame(current_user):
                 current_user.times_won,
             )
 
-            print(f"High Score: {current_user.high_score}")
+            print(f"\nHigh Score: {current_user.high_score}")
             time.sleep(1)
             game_looping = False
 
         else:
             current_room = current_room.exit_room(new_outcome)
-            
 
 
 # logged in, sub menu
@@ -230,8 +224,6 @@ def subMenu(current_user):
             Room.reset_rooms()
             mainGame(current_user)
         elif choice == "2":
-
-            
             print("                            ")
             print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
             print("|" + "{:^{}s}".format("ACCOUNT DETAILS", WINDOW_WIDTH - 2) + "|")
@@ -290,6 +282,6 @@ while looping:
             subMenu(current_user)
     elif choice == "x":
         looping = False
-        print("Exiting game...")
+        print("\nExiting game...")
     else:
         print("Not a valid input!")

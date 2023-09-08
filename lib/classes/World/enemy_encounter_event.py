@@ -15,12 +15,10 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     Also returns encounter outcome: victory, encounter, already encountered
     """
 
-    
-
     looping = True
     if enemy.is_dead():
         slow_text(f"You stand over the lifeless body of the {enemy.name}.")
-        time.sleep(1)
+        # time.sleep(1)
         while looping:
             choice = print_menu(defeated_enemy_menu_dict)
 

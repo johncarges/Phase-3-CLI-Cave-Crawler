@@ -183,11 +183,17 @@ TREASURE_TEXT_AFTER_FIRST = [
     treasure_text_after_first_4,
 ]
 
-fork_room_text = FORK_TEXT[randint(0, 3)]
-treasure_room_first = TREASURE_TEXT_FIRST_TIME[randint(0, 3)]
-treasure_room_again = TREASURE_TEXT_AFTER_FIRST[randint(0, 3)]
+
+def fork_room_text():
+    return FORK_TEXT[randint(0, 3)]
 
 
+def treasure_room_first():
+    return TREASURE_TEXT_FIRST_TIME[randint(0, 3)]
+
+
+def treasure_room_again():
+    return TREASURE_TEXT_AFTER_FIRST[randint(0, 3)]
 
 
 def slow_text(text, delay=0.03):
