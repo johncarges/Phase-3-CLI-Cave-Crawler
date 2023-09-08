@@ -36,7 +36,7 @@ class User:
             sql, (self.username, self.password, self.high_score, self.times_played, self.times_won)
         )
         CONN.commit()
-        self.id = CURSOR.execute("SELECT last_insert_rowid() FROM users").fetchone()
+        self.id = CURSOR.execute("SELECT last_insert_rowid() FROM users").fetchone()[0]
 
     # sign up methods
     @classmethod
@@ -105,11 +105,34 @@ class User:
         user_info = CURSOR.execute(sql).fetchone()
         return User(id=user_info[0], username=user_info[1], password=user_info[2])
 
+    def encounter_and_defeated_count(self,enemy_id):
+        CONN = sqlite3.connect("./lib/db/cave_crawler.db")
+        CURSOR = CONN.cursor()
+        sql = f"""
+            SELECT COUNT(*) 
+            FROM encounters
+            WHERE user = {self.id}
+            AND enemy = {int(enemy_id)}
+        """
+        encounter_count = CURSOR.execute(sql).fetchone()[0]
+        sql = f"""
+            SELECT COUNT(*) 
+            FROM encounters
+            WHERE user = {self.id}
+            AND enemy = {int(enemy_id)}
+            AND defeated = TRUE
+        """
+        defeated_count = CURSOR.execute(sql).fetchone()[0]
+        CONN.commit()
+        CONN.close()
+        return (encounter_count, defeated_count)
+
+
     def view_enemy_encounters(self, width):
         CONN = sqlite3.connect("./lib/db/cave_crawler.db")
         CURSOR = CONN.cursor()
         enemies_sql = """
-            SELECT name, health, attack, level, description 
+            SELECT name, health, attack, level, description, id 
             FROM enemies
         """
         enemies_list = [list(enemy) for enemy in CURSOR.execute(enemies_sql).fetchall()]
@@ -137,29 +160,28 @@ class User:
         defeated_enemies = [enemy[0] for enemy in CURSOR.execute(defeated_sql).fetchall()]
         CONN.close()
 
+
+
+        # for index, enemy in enumerate(enemies_list):
+        #     if enemy[0] not in encountered_enemies:
+        #         enemies_list[index] = ["????", "?", "?", "?", "????", " "]
+        #     if enemy[0] in defeated_enemies:
+        #         enemy.append("x")
+        #     else:
+        #         enemy.append(" ")
+        
         for index, enemy in enumerate(enemies_list):
             if enemy[0] not in encountered_enemies:
-                enemies_list[index] = ["????", "?", "?", "?", "????", " "]
-            if enemy[0] in defeated_enemies:
-                enemy.append("x")
+                enemies_list[index] = ["????", "?", "?", "?", "????", " ", " ", " "]
             else:
-                enemy.append(" ")
+                enemy.append(self.encounter_and_defeated_count(enemy[5])[0])
+                enemy.append(self.encounter_and_defeated_count(enemy[5])[1])
+      
+            
 
         print("")
         print(
-            "+"
-            + "-" * 21
-            + "+"
-            + "-" * 8
-            + "+"
-            + "-" * 8
-            + "+"
-            + "-" * 8
-            + "+"
-            + "-" * 7
-            + "+"
-            + "-" * 51
-            + "+"
+            "+" + "-" * 21 + "+"+ "-" * 8 + "+" + "-" * 8+ "+" + "-" * 8 + "+" + "-" * 7+ "+"+ "-" * 51+ "+"
         )
         print(
             "| "
@@ -196,7 +218,7 @@ class User:
                 "| "
                 + "{:20}".format(enemy[0])
                 + "| "
-                + "{:^7}".format(enemy[5])
+                + "{:^7}".format(enemy[7])
                 + "| "
                 + "{:^7}".format(enemy[1])
                 + "| "
