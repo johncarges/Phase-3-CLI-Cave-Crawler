@@ -179,37 +179,7 @@ def delete_user_by_name(name):
     CURSOR.execute(sql)
 
 
-# enemy_list = [
-#     {
-#         "name": "Bat",
-#         "health": 5,
-#         "attack": 2,
-#         "level": 1,
-#         "description": "Creepy flying guy that goes down easy!",
-#     },
-#     {"name": "Slime", "health": 3, "attack": 1, "level": 1, "description": "Ew!"},
-#     {
-#         "name": "Ghoul",
-#         "health": 10,
-#         "attack": 1,
-#         "level": 2,
-#         "description": "A slow spooky guy who can barely attack!",
-#     },
-#     {
-#         "name": "Cave Troll",
-#         "health": 15,
-#         "attack": 3,
-#         "level": 5,
-#         "description": "Run from this guy unless you're feelin' powerful.",
-#     },
-#     {
-#         "name": "Walking Mushroom",
-#         "health": 2,
-#         "attack": 0,
-#         "level": 0,
-#         "description": "What the heck!",
-#     },
-# ]
+
 
 enemy_list = [
     {

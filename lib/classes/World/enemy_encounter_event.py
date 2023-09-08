@@ -8,14 +8,18 @@ from random import randint
 import time
 
 
+def killed_by_enemy(enemy):
+    print(f"\nYou have been slain by the {enemy.name}!\n")
+    enemy_print[enemy.name]()
+    time.sleep(2)
+    return "game over"
+
 def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     """
     Runs enemy encounter - updates player and enemy health.
     Returns direction: back, forward, game over, or quit.
     Also returns encounter outcome: victory, encounter, already encountered
     """
-
-    
 
     looping = True
     if enemy.is_dead():
@@ -50,11 +54,10 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             if choice == "1":
                 print_out.append(f"You attack the {enemy.name}! You deal {player.attack} damage.")
                 enemy.health -= player.attack
-                # time.sleep(1)
                 if enemy.is_dead():
                     print_out.append(f"\nThe {enemy.name} is no more!")
                     enemy_defeated = True
-                    # time.sleep(1)
+                    
                     for item in print_out:
                         print(item)
                     return enemy_encounter(
@@ -65,9 +68,9 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                         f"\nThe {enemy.name} attacks you back for {enemy.attack} hearts!"
                     )
                     player.health -= enemy.attack
-                    # time.sleep(1)
+                    
                     if player.health <= 0:
-                        outcome = "game over"
+                        outcome = killed_by_enemy(enemy)
                         break
             elif choice == "2":
                 coin = randint(0, 1)
@@ -79,9 +82,8 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 else:
                     print(f"The {enemy.name} sees you and attacks!")
                     player.health -= enemy.attack
-                    # time.sleep(1)
                     if player.health <= 0:
-                        outcome = "game over"
+                        outcome = killed_by_enemy(enemy)
                         break
             elif choice == "3":
                 print("You decide to return to safety!\n")
@@ -96,5 +98,4 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             for item in print_out:
                 print(item)
 
-    # print(f"outcome: {outcome}")
     return (outcome, enemy_defeated)
