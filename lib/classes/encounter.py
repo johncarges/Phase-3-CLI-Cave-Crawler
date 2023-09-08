@@ -29,9 +29,6 @@ class Encounter:
 
     def save_encounter(self):
         sql = "INSERT INTO encounters (enemy, user, defeated) values (?, ?, ?)"
-        # print(self.enemy)
-        # print(f"self.enemy.id: {self.enemy.id}")
-        # print(f"self.user.id: {self.user.id}")
         CONN = sqlite3.connect("./lib/db/cave_crawler.db")
         CURSOR = CONN.cursor()
         CURSOR.execute(sql, (self.enemy.id, self.user.id, self.defeated))

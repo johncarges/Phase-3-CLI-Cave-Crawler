@@ -7,10 +7,6 @@ from helpers import WINDOW_WIDTH
 from random import randint
 import time
 
-user = User.sample_user()
-enemy = Enemy.create_from_db(level=10)
-player = Player()
-
 
 def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     """
@@ -18,6 +14,8 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     Returns direction: back, forward, game over, or quit.
     Also returns encounter outcome: victory, encounter, already encountered
     """
+
+    
 
     looping = True
     if enemy.is_dead():
@@ -74,23 +72,20 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             elif choice == "2":
                 coin = randint(0, 1)
                 if coin == 0:
-                    print_out.append(f"\nYou successfully snuck by the {enemy.name}!")
-                    # time.sleep(1)
+                    print(f"You successfully snuck by the {enemy.name}!\n")
                     input("Press any key to continue: ")
                     outcome = "straight"
                     break
                 else:
-                    print_out.append(
-                        f"\nThe {enemy.name} sees you and attacks for {enemy.attack} hearts!"
-                    )
+                    print(f"The {enemy.name} sees you and attacks!")
                     player.health -= enemy.attack
                     # time.sleep(1)
                     if player.health <= 0:
                         outcome = "game over"
                         break
             elif choice == "3":
-                print("\nYou decide to return to safety!")
-                # time.sleep(1)
+                print("You decide to return to safety!\n")
+
                 outcome = "previous"
                 break
             elif choice == "x":

@@ -14,9 +14,12 @@ class Room:
     all = []
     start_room = None
     open_paths = 3
+    type_counts = {room_type:0 for room_type in ROOM_TYPES}
 
     def __init__(self, level, type=None, previous_room=None, enemy=None, treasure=True):
         self.type = type
+        Room.type_counts[type]+=1
+        self.name = f"{self.type}{Room.type_counts[type]}"
         self.level = level
         self.enemy = enemy
         self.treasure = treasure
@@ -32,7 +35,7 @@ class Room:
         # QUESTION - SSOT, should room only save next rooms? Find previous room with lookup?
 
     def __repr__(self):
-        return f"{self.type} room on level {self.level}"
+        return f"{self.name.capitalize()} on level {self.level}"
 
     @classmethod
     def reset_rooms(cls):
@@ -47,7 +50,9 @@ class Room:
         """
         # First, check whether there whether there is more than one open path. If so, don't allow new dead-end
         # TO-DO: add logic to make sure you don't hit three enemies in a row or three forks in a row
-        if Room.open_paths > 3:  # If too many options, give enemy or treasure
+        if previous_room.type == "enemy" and previous_room.adjacent_rooms["previous"].type == "enemy":
+            rand_type = "fork"
+        elif Room.open_paths > 3:  # If too many options, give enemy or treasure
             rand_type = Room.ROOM_TYPES[randint(2, 3)]
         elif Room.open_paths > 2:
             rand_type = Room.ROOM_TYPES[randint(1, 3)]
@@ -242,3 +247,13 @@ class Room:
         elif self.type == "dead_end":
             outcome = self.treasure_room(player)
         return outcome
+
+    def possible_directions(self):
+        if self.type == "start":
+            return ["left","straight","right"]
+        elif self.type == "fork":
+            return ["left","right"]
+        elif self.type == "enemy":
+            return ["straight"]
+        elif self.type == "dead_end":
+            return []
