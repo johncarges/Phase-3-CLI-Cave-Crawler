@@ -232,7 +232,6 @@ class Room:
             ]  # if room has already been explored, (self.adjacent_rooms[path] not None) return this room
         else:
             new_room = Room.create_new_room(self.level + 1, previous_room=self, path=path)
-            debug_print(f"New room")
             return new_room
 
     def run_room(self, user=None, player=None, enemy=None, treasure=None):
