@@ -28,59 +28,7 @@ def create_user_table():
     CURSOR.execute(sql)
 
 
-# this has everyone, but all stats start at 0
-# user_list = [
-#     {
-#         "username": "BreElle",
-#         "password": "isawesome",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {"username": "John", "password": "iscool", "high_score": 0, "times_played": 0, "times_won": 0},
-#     {
-#         "username": "Curtis",
-#         "password": "pearls",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {
-#         "username": "Teddy",
-#         "password": "thebear",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {
-#         "username": "Hiro",
-#         "password": "thegenius",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {
-#         "username": "Farhan",
-#         "password": "thebaker",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {
-#         "username": "Tess",
-#         "password": "thegreat",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-#     {
-#         "username": "Thomas",
-#         "password": "thewolf",
-#         "high_score": 0,
-#         "times_played": 0,
-#         "times_won": 0,
-#     },
-# ]
+
 
 user_list = [
     {
@@ -99,7 +47,7 @@ user_list = [
     },
     {
         "username": "Curtis",
-        "password": "pearls",
+        "password": "luvspearls",
         "high_score": 2,
         "times_played": 21,
         "times_won": 0,
@@ -177,7 +125,6 @@ def delete_user_by_name(name):
         WHERE username = {name}
     """
     CURSOR.execute(sql)
-
 
 
 
