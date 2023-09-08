@@ -1,13 +1,13 @@
 import sqlite3
 
-class Encounter:
 
+class Encounter:
     def __init__(self, user, enemy, id=None):
         self.id = id
         self.user = user
         self.enemy = enemy
         self.defeated = False
-        
+
         self.create_encounter_table()
         self.save_encounter()
 
@@ -47,9 +47,3 @@ class Encounter:
         CONN.commit()
         CONN.close()
         self.defeated = True
-        
-
-
-
-
-

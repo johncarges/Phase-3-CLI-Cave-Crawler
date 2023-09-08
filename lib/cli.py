@@ -15,6 +15,7 @@ high_score = 0
 
 # print methods
 def print_cave_outline():
+    print()
     print("+--------------------------------------------------------------------------------+")
     print("|                    /   \              /'\       _                              |")
     print("|\_..           /'.,/     \_         .,'   \     / \_                            |")
@@ -36,6 +37,35 @@ def print_cave_outline():
     print("|    ( (__/    \ \/ /) _)   ( (__ )   /    \ /\ / (_/\) _) )   /      \       \  |")
     print("|     \___)_/\_/\__/(____)   \___|__\_)_/\_(_/\_)____(____|__\_)               \ |")
     print("+--------------------------------------------------------------------------------+")
+    time.sleep(1)
+
+
+def print_escape_art():
+    print()
+    print(r"+----------------------------------------------------------------------------+")
+    print(r"|  ` : | | | |:  ||  :     `  :  |  |+|: | : : :|   .        `              .|")
+    print(r"|         .' ':  ||  |:  |  '       ` || | : | |: : |   .  `           .   :.|")
+    print(r"|                `'  ||  |  ' |   *    ` : | | :| |*|  :   :               :||")
+    print(r"|        *    *       `  |  : :  |  .      ` ' :| | :| . : :         *   :.|||")
+    print(r"|             .`            | |  |  : .:|       ` | || | : |: |          | |||")
+    print(r"|      '          .         + `  |  :  .: .         '| | : :| :    .   |:| |||")
+    print(r"|         .                 .    ` *|  || :       `    | | :| | :      |:| | |")
+    print(r"| .                .          .        || |.: *          | || : :     :|||   |")
+    print(r"|        .            .   . *    .   .  ` |||.  +        + '| |||  .  ||`    |")
+    print(r"|     .             *              .     +:`|!             . ||||  :.||`     |")
+    print(r"| +                      .                ..!|*          . | :`||+ |||`      |")
+    print(r"|     .                         +      : |||`        .| :| | | |.| ||`     . |")
+    print(r"|       *     +   '               +  :|| |`     :.+. || || | |:`|| `         |")
+    print(r"|                            .      .||` .    ..|| | |: '` `| | |`  +        |")
+    print(r"|  .       +++                      ||        !|!: `       :| |              |")
+    print(r"|              +         .      .    | .      `|||.:      .||    .      .    |")
+    print(r"|          '                           `|.   .  `:|||   + ||'     `          |")
+    print(r"|  __    +      *                         `'       `'|.    `:                |")
+    print(r"|  _  _ __  _  _    ____ ____  ___  __  ____ ____ ____ `.    `.  .    ____,.,|")
+    print(r"| ( \/ )  \/ )( \  (  __) ___)/ __)/ _\(  _ (  __|    \    ___,--'--`---'':.:|")
+    print(r"|  )  (  O ) \/ (   ) _)\___ ( (__/    \) __/) _) ) D (--'':.:.:.:.::.:.:.:.:|")
+    print(r"| (__/ \__/\____/  (____|____/\___)_/\_(__) (____|____/ :.:.:.:.::.:.:.:.::.:|")
+    print(r"+----------------------------------------------------------------------------+")
     time.sleep(1)
 
 
@@ -106,22 +136,10 @@ def view_log_in_menu():
 
     print_header(login_success_header)
     print(f"\nWelcome back, {account_info[1].upper()}!")
-    print(f"\nHigh Score: {account_info[3]}")
-    # add one to compensate for database not refreshing...
-    print(f"Times Played: {account_info[4] + 1}")
-    print(f"Times Won: {account_info[5]}")
 
     return current_user
 
 
-def view_account_details_menu(current_user):
-    print_header(account_details_header)
-
-    account_info = current_user.on_successful_login(current_user)
-
-    print(f"High Score: {account_info[3]}")
-    print(f"Times Played: {account_info[4]}")
-    print(f"Times Won: {account_info[5]}")
 
 def mainGame(current_user):
     player = Player()
@@ -140,26 +158,44 @@ def mainGame(current_user):
             # debug_print(f"current_room: {current_room}")
             # debug_print(f"open_paths: {Room.open_paths}")
         #####
-        highest_level_reached = max(current_room.level,highest_level_reached)
+
+        highest_level_reached = max(current_room.level, highest_level_reached)
+
         if current_room.level != 0 or not current_room.first_time:
+            print_line()
             print(
-                f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
+                f"[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
             )
 
         if current_room.level == VICTORY_LEVEL:
-            print_header(game_won_header)
+            # print_header(game_won_header)
+            print_escape_art()
             new_outcome = "exit"
             current_user.times_won += 1
         else:
-            new_outcome = current_room.run_room(user=current_user,player=player)  # return previous, exit, left, straight, right
+            new_outcome = current_room.run_room(
+                user=current_user, player=player
+            )  # return previous, exit, left, straight, right
 
         if new_outcome in ["exit", "game over"]:
-            highest_level_reached = current_room.level
-
             if current_room.level != VICTORY_LEVEL:
-                print_header(game_over_header)
+                # print_header(game_over_header)
 
-                print(f"You reached level {highest_level_reached}!")
+                print()
+                print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+                print("|" + "{:^{}s}".format("GAME OVER", WINDOW_WIDTH - 2) + "|")
+                print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+                print(
+                    "| "
+                    + "{:<{}s}".format(
+                        f"You reached: Level {highest_level_reached}", WINDOW_WIDTH - 3
+                    )
+                    + "|"
+                )
+                print("| " + "{:<{}s}".format(f" High Score: {high_score}", WINDOW_WIDTH - 3) + "|")
+                print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+
+                # print(f"\nYou reached: Level {highest_level_reached}!")
 
             if highest_level_reached > current_user.high_score:
                 current_user.high_score = highest_level_reached
@@ -171,20 +207,17 @@ def mainGame(current_user):
                 current_user.times_played,
                 current_user.times_won,
             )
+
             print(f"High Score: {current_user.high_score}")
             time.sleep(1)
             game_looping = False
-        
 
         else:
             current_room = current_room.exit_room(new_outcome)
-            print("")
-            print_map(current_room)
-            # ipdb.set_trace()
-    
+
 
 # logged in, sub menu
-def subMenu(current_user): 
+def subMenu(current_user):
     current_user = current_user
     menu_looping = True
 
@@ -195,12 +228,44 @@ def subMenu(current_user):
             Room.reset_rooms()
             mainGame(current_user)
         elif choice == "2":
-            print_header(account_details_header)
-            current_user.view_account_details(width=WINDOW_WIDTH)
+
+            
+            print("                            ")
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print("|" + "{:^{}s}".format("ACCOUNT DETAILS", WINDOW_WIDTH - 2) + "|")
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print(
+                "| "
+                + "{:<{}s}".format(f"High Score: {current_user.high_score}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print(
+                "| "
+                + "{:<{}s}".format(f"Times Played: {current_user.times_played}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print(
+                "| "
+                + "{:<{}s}".format(f"Times Won: {current_user.times_won}", WINDOW_WIDTH - 3)
+                + "|"
+            )
+            print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+            print("")
+            input("Press any key to continue: ")
+        #             print_header(account_details_header)
+        #             current_user.view_account_details(width=WINDOW_WIDTH)
+        #  print(f"High Score: {current_user.high_score}")
+        # print(f"Times Played: {current_user.times_played}")
+        # print(f"Times Won: {current_user.times_won}")
+        # input("Press any key to continue: ")
         elif choice == "3":
             current_user.view_enemy_encounters(width=WINDOW_WIDTH)
+            # view_enemy_encounters(current_user)
+            pass
+
         elif choice == "x":
             print("\nLogging out...")
+            time.sleep(1)
             menu_looping = False
         else:
             print("\nNot a valid input!")
@@ -213,10 +278,12 @@ while looping:
 
     if choice == "1":
         current_user = view_sign_up_menu()
+        time.sleep(1)
         if current_user != None:
             subMenu(current_user)
     elif choice == "2":
         current_user = view_log_in_menu()
+        time.sleep(1)
         if current_user != None:
             subMenu(current_user)
     elif choice == "x":
@@ -224,8 +291,3 @@ while looping:
         print("Exiting game...")
     else:
         print("Not a valid input!")
-
-
-
-
-

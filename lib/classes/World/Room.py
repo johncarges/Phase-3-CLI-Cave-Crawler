@@ -2,10 +2,10 @@ from random import randint
 from classes.Enemy import Enemy
 from classes.encounter import Encounter
 from prints.print_formats import *
+from prints.print_enemy_art import chest_mist, chest_potion, chest_sword
 from classes.World.enemy_encounter_event import enemy_encounter
 
 from helpers import DEBUGGING, debug_print
-
 
 
 class Room:
@@ -40,9 +40,8 @@ class Room:
     @classmethod
     def reset_rooms(cls):
         cls.all = []
-        cls.open_paths = 3 
+        cls.open_paths = 3
         cls.start_room = None
-
 
     @classmethod
     def create_new_room(cls, level, previous_room, path):
@@ -84,7 +83,8 @@ class Room:
         Run upon entering or starting in initial room
         """
         if self.first_time:
-            slow_text("\nBeginning your adventure...")
+            print_line()
+            slow_text("Beginning your adventure...")
             slow_text(
                 "\nWould you like to skip the narrative introduction? (Recommended for returning players.)"
             )
@@ -103,7 +103,6 @@ class Room:
 
         else:
             slow_text(starting_text_after_first)
-            
 
         outcome = None
         while not outcome:
@@ -146,7 +145,7 @@ class Room:
         """
         Run upon entering fork in the road room
         """
-        slow_text(fork_text)
+        slow_text(fork_room_text)
         outcome = None
         while not outcome:
             choice = print_options(fork_room)
@@ -164,21 +163,19 @@ class Room:
         return outcome
 
     def treasure_room(self, player):
-
         """
         Run upon entering treasure room - called on treasure room instance
         """
         if self.first_time:
-            slow_text(treasure_text_first_time)
+            slow_text(treasure_room_first)
             self.first_time = False
         else:
-            print("You return to the dead end chamber for some reason")
-        
+            slow_text(treasure_room_again)
         if self.treasure:
             outcome = None
         else:
-            print("There's nothing to see here, so you return to the previous room")
-            input("Enter any key to continue")
+            print("There's nothing to see here, so you return to the previous room.")
+            input("Press any key to continue: ")
             return "previous"
 
         while not outcome:
@@ -192,12 +189,14 @@ class Room:
                     rand_chest = randint(1, 4)
 
                     if rand_chest == 1:
+                        chest_sword()
                         slow_text(
                             "You find a new sword! Your attack is increased by 2. After taking the sword, you return to the previous area."
                         )
                         player.attack += 2
-                        
+
                     elif rand_chest == 2:
+                        chest_potion()
                         slow_text(
                             "You find a healing potion! Your health is increased by 1. After taking the potion, you return to the previous area."
                         )
@@ -205,6 +204,7 @@ class Room:
                     elif rand_chest == 3:
                         slow_text("The chest is empty! You sadly return to the previous area.")
                     elif rand_chest == 4:
+                        chest_mist()
                         slow_text(
                             "Upon opening the chest, you are engulfed by a sinister mist and cursed with dark magic! Your health is decreased by 2. You stumble back to the previous area."
                         )
@@ -220,8 +220,9 @@ class Room:
                     outcome = "previous"
                 else:
                     print("\nNot a valid input!")
-        input("Enter any key to continue")
-        return outcome # could just be return "previous" ?
+        print()
+        input("Press any key to continue: ")
+        return outcome  # could just be return "previous" ?
 
     def exit_room(self, path):
         """(current room, path choice -> room (could be new or already visited) )"""

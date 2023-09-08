@@ -2,7 +2,10 @@ from classes.player import Player
 from classes.Enemy import Enemy
 from classes.user import User
 from prints.print_formats import print_menu, battle_menu_dict, defeated_enemy_menu_dict, slow_text
+from prints.print_enemy_art import enemy_print
+from helpers import WINDOW_WIDTH
 from random import randint
+import time
 
 
 def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
@@ -16,7 +19,8 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
 
     looping = True
     if enemy.is_dead():
-        slow_text(f"You stand over the dead {enemy.name}.")
+        slow_text(f"You stand over the lifeless body of the {enemy.name}.")
+        time.sleep(1)
         while looping:
             choice = print_menu(defeated_enemy_menu_dict)
 
@@ -34,10 +38,11 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 continue
     else:
         slow_text(f"You come across an enemy {enemy.name}!")
+        enemy_print[enemy.name]()
         enemy_defeated = False
         while looping:
-            print(f"\n{'{:>15}'.format(user.username)}: {'[♥]'*player.health}")
-            print(f"{'{:>15}'.format(enemy.name)}: {'[♥]'*enemy.health}")
+            print(f"\n{'{:>11}'.format(user.username)}: {'[♥]'*player.health}")
+            print(f"{'{:>11}'.format(enemy.name)}: {'[♥]'*enemy.health}")
 
             choice = print_menu(battle_menu_dict)
             print("\n")
@@ -45,17 +50,22 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             if choice == "1":
                 print_out.append(f"You attack the {enemy.name}! You deal {player.attack} damage.")
                 enemy.health -= player.attack
+                # time.sleep(1)
                 if enemy.is_dead():
                     print_out.append(f"\nThe {enemy.name} is no more!")
                     enemy_defeated = True
+                    # time.sleep(1)
                     for item in print_out:
                         print(item)
                     return enemy_encounter(
                         user, player, enemy, enemy_defeated=enemy_defeated
                     )  # tricky little recursion :|
                 else:
-                    print_out.append(f"\nThe {enemy.name} attacks you back for {enemy.attack} hearts!")
+                    print_out.append(
+                        f"\nThe {enemy.name} attacks you back for {enemy.attack} hearts!"
+                    )
                     player.health -= enemy.attack
+                    # time.sleep(1)
                     if player.health <= 0:
                         outcome = "game over"
                         break
@@ -69,11 +79,13 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 else:
                     print(f"The {enemy.name} sees you and attacks!")
                     player.health -= enemy.attack
+                    # time.sleep(1)
                     if player.health <= 0:
                         outcome = "game over"
                         break
             elif choice == "3":
                 print("You decide to return to safety!\n")
+
                 outcome = "previous"
                 break
             elif choice == "x":
