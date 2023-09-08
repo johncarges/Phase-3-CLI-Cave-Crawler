@@ -1,4 +1,5 @@
 def print_bat():
+    print()
     print(r"    =/\                 /\=     ")
     print(r"    /  '._   (\_/)   _.'/ \     ")
     print(r"   / .''._'--(o.o)--'_.''. \    ")
@@ -9,6 +10,7 @@ def print_bat():
 
 
 def print_slime():
+    print()
     print(r"     .-.           ")
     print(r"   .'   `.         ")
     print(r"   :g g   :        ")
@@ -19,6 +21,7 @@ def print_slime():
 
 
 def print_centaur():
+    print()
     print(r"      <=======]}======")
     print(r"    --.   /|          ")
     print(r"   _\"/_.'/           ")
@@ -32,6 +35,7 @@ def print_centaur():
 
 
 def print_griffin():
+    print()
     print(r"    .-')          _        ")
     print(r"   (`_^ (    .----`/       ")
     print(r"    ` )  \_/`   __/     __,")
@@ -43,6 +47,7 @@ def print_griffin():
 
 
 def print_phoenix():
+    print()
     print(r'   _,="( _  )"=,_   ')
     print(r"_,'    \_>\_/    ',_")
     print(r".7,     {  }     ,\.")
@@ -52,6 +57,7 @@ def print_phoenix():
 
 
 def print_skeleton():
+    print()
     print(r"      .-.    ")
     print(r"     (o.o)   ")
     print(r"      |=|    ")
@@ -62,6 +68,7 @@ def print_skeleton():
 
 
 def print_unicorn():
+    print()
     print(r"_______\)%%%%%%%%._         ")
     print(r"`''''-'-;   % % % % %'-._   ")
     print(r"        :b) \            '-.")
@@ -73,6 +80,7 @@ def print_unicorn():
 
 
 def print_bear():
+    print()
     print(r"    .--.              .--. ")
     print(r'   : (\ ". _......_ ." /) :')
     print(r"    '.    `        `    .' ")
@@ -86,6 +94,7 @@ def print_bear():
 
 
 def print_cat():
+    print()
     print(r'("`-' '-/").___..--' '"`-._        ')
     print(r" `6_ 6  )   `-.  (     ).`-.__.`)")
     print(r" (_Y_.)'  ._   )  `._ `. ``-..-' ")
@@ -94,6 +103,7 @@ def print_cat():
 
 
 def print_ant():
+    print()
     print(r" \       /                       ")
     print(r"  \     /                        ")
     print(r"   \.-./                         ")
