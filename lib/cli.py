@@ -178,20 +178,19 @@ def mainGame(current_user):
 
         if new_outcome in ["exit", "game over"]:
             if current_room.level != VICTORY_LEVEL:
-                highest_level_reached = max(current_room.level, highest_level_reached)
+
                 print()
                 print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
                 print("|" + "{:^{}s}".format("GAME OVER", WINDOW_WIDTH - 2) + "|")
                 print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
                 print(
-                    "| "
-                    + "{:<{}s}".format(
-                        f"You reached: Level {highest_level_reached}", WINDOW_WIDTH - 3
-                    )
-                    + "|"
+                    "| " + "{:>{}s}".format("You reached: ", (WINDOW_WIDTH - 3)//2)+ "{:<{}s}".format(f"Level {highest_level_reached}",((WINDOW_WIDTH - 3)//2)+1)+ "|"
                 )
-                print("| " + "{:<{}s}".format(f" High Score: {high_score}", WINDOW_WIDTH - 3) + "|")
+                print(
+                    "| " + "{:>{}s}".format("High Score: ", (WINDOW_WIDTH - 3)//2)+ "{:<{}s}".format(f"Level {current_user.high_score}",((WINDOW_WIDTH - 3)//2)+1) + "|"
+                )
                 print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
+
 
             if highest_level_reached > current_user.high_score:
                 current_user.high_score = highest_level_reached
@@ -204,7 +203,6 @@ def mainGame(current_user):
                 current_user.times_won,
             )
 
-            print(f"\nHigh Score: {current_user.high_score}")
             time.sleep(1)
             game_looping = False
 
@@ -229,19 +227,13 @@ def subMenu(current_user):
             print("|" + "{:^{}s}".format("ACCOUNT DETAILS", WINDOW_WIDTH - 2) + "|")
             print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
             print(
-                "| "
-                + "{:<{}s}".format(f"High Score: {current_user.high_score}", WINDOW_WIDTH - 3)
-                + "|"
+                "| " + "{:>{}s}".format("High Score: ", (WINDOW_WIDTH - 3)//2+4)+ "{:<{}s}".format(f"{current_user.high_score}",((WINDOW_WIDTH - 3)//2)-3)+ "|"
             )
             print(
-                "| "
-                + "{:<{}s}".format(f"Times Played: {current_user.times_played}", WINDOW_WIDTH - 3)
-                + "|"
+                "| " + "{:>{}s}".format("Times Played: ", (WINDOW_WIDTH - 3)//2+4)+ "{:<{}s}".format(f"{current_user.times_played}",((WINDOW_WIDTH - 3)//2)-3) + "|"
             )
             print(
-                "| "
-                + "{:<{}s}".format(f"Times Won: {current_user.times_won}", WINDOW_WIDTH - 3)
-                + "|"
+                "| " + "{:>{}s}".format("Times Won: ", (WINDOW_WIDTH - 3)//2+4)+ "{:<{}s}".format(f"{current_user.times_won}",((WINDOW_WIDTH - 3)//2)-3) + "|"
             )
             print("+" + "-" * (WINDOW_WIDTH - 2) + "+")
             print("")
