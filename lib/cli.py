@@ -162,8 +162,9 @@ def mainGame(current_user):
 
         if current_room.level != 0 or not current_room.first_time:
             print_line()
+            print_map(current_room)
             print(
-                f"[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
+                f"\n[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
             )
 
         if current_room.level == VICTORY_LEVEL:
@@ -209,7 +210,6 @@ def mainGame(current_user):
 
         else:
             current_room = current_room.exit_room(new_outcome)
-            print_map(current_room)
 
 
 # logged in, sub menu

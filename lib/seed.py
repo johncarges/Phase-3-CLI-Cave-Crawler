@@ -171,6 +171,13 @@ def create_enemy_table():
     """
     CURSOR.execute(sql)
 
+def delete_user_by_name(name):
+    sql = f"""
+        DELETE FROM users
+        WHERE username = {name}
+    """
+    CURSOR.execute(sql)
+
 
 enemy_list = [
     {
@@ -290,30 +297,32 @@ debug_menu_dict = {
     "input_header": "Input your choice: ",
 }
 
+def add_enemy_by_command_line():
+    looping = True
+    while looping:
+        choice = print_menu(debug_menu_dict)
+
+        if choice == "1":
+            enemy = input("enemy name: ")
+            health = input("enemy health: ")
+            attack = input("enemy attack: ")
+            level = input("enemy level: ")
+            description = input("enemy description: ")
+            print(f"Name: {enemy}   Health: {health}   Attack: {attack}   Level: {level}")
+            print(f"{description}")
+            choice = input("Save? [y/n]")
+            if choice == "y":
+                sql = "INSERT INTO enemies ( name, health, attack, level, description ) values (? , ?, ?, ?, ?)"
+                CURSOR.execute(sql, (enemy, health, attack, level, description))
+                CONN.commit()
+        elif choice == "x":
+            break
+        else:
+            print("not a valid input")
 
 if __name__ == "__main__":
-    # UNCOMMENT ALL THREE IF YOU DON"T HAVE ENEMY OR ENCOUNTERS TABLE
-    # looping = True
-    # while looping:
-    #     choice = print_menu(debug_menu_dict)
 
-    #     if choice == "1":
-    #         enemy = input("enemy name: ")
-    #         health = input("enemy health: ")
-    #         attack = input("enemy attack: ")
-    #         level = input("enemy level: ")
-    #         description = input("enemy description: ")
-    #         print(f"Name: {enemy}   Health: {health}   Attack: {attack}   Level: {level}")
-    #         print(f"{description}")
-    #         choice = input("Save? [y/n]")
-    #         if choice == "y":
-    #             sql = "INSERT INTO enemies ( name, health, attack, level, description ) values (? , ?, ?, ?, ?)"
-    #             CURSOR.execute(sql, (enemy, health, attack, level, description))
-    #             CONN.commit()
-    #     elif choice == "x":
-    #         break
-    #     else:
-    #         print("not a valid input")
+   
 
     # create_user_table()
     # add_user_to_db(user_list)
@@ -322,4 +331,8 @@ if __name__ == "__main__":
     # add_enemy_to_db(enemy_list)
     # create_encounter_table()
     # delete_encounters_from_db()
-    pass
+    #delete_user_by_name("johncarges")
+    add_user_to_db(user_list)
+    delete_enemy_from_db()
+    delete_encounters_from_db()
+    add_enemy_to_db(enemy_list)
