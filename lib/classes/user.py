@@ -105,8 +105,7 @@ class User:
         user_info = CURSOR.execute(sql).fetchone()
         return User(id=user_info[0], username=user_info[1], password=user_info[2])
 
-    def view_enemy_encounters(self,width):
-    
+    def view_enemy_encounters(self, width):
         CONN = sqlite3.connect("./lib/db/cave_crawler.db")
         CURSOR = CONN.cursor()
         enemies_sql = """
@@ -132,57 +131,101 @@ class User:
         """
         defeated_enemies = [enemy[0] for enemy in CURSOR.execute(defeated_sql).fetchall()]
         CONN.close()
-        
+
         for index, enemy in enumerate(enemies_list):
             if enemy[0] not in encountered_enemies:
-                enemies_list[index] = ["????","?","?","?","????"," "]
+                enemies_list[index] = ["????", "?", "?", "?", "????", " "]
             if enemy[0] in defeated_enemies:
                 enemy.append("x")
             else:
                 enemy.append(" ")
-        print(f"enemies_list = {enemies_list}")
-        print(f"encountered_enemies = {encountered_enemies}")
-        print(f"defeated_enemies = {defeated_enemies}")
+        # print(f"enemies_list = {enemies_list}")
+        # print(f"encountered_enemies = {encountered_enemies}")
+        # print(f"defeated_enemies = {defeated_enemies}")
         print("")
-        print("+" + "-"*21 
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" +"-"*7
-            + "+" +"-"*51 + "+")
-        print("| " + '{:20}'.format("ENEMY") 
-            + "| " + '{:7}'.format("SLAIN")
-            + "| " + '{:7}'.format("HEALTH")
-            + "| " + '{:7}'.format("ATTACK")
-            + "| " +'{:6}'.format("LEVEL")
-            + "| " +'{:{}s}'.format("DESCRIPTION", 50) + "|")
-        print("+" + "-"*21 
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" +"-"*7
-            + "+" +"-"*51 + "+")
+        print(
+            "+"
+            + "-" * 21
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 7
+            + "+"
+            + "-" * 51
+            + "+"
+        )
+        print(
+            "| "
+            + "{:20}".format("ENEMY")
+            + "| "
+            + "{:7}".format("SLAIN")
+            + "| "
+            + "{:7}".format("HEALTH")
+            + "| "
+            + "{:7}".format("ATTACK")
+            + "| "
+            + "{:6}".format("LEVEL")
+            + "| "
+            + "{:{}s}".format("DESCRIPTION", 50)
+            + "|"
+        )
+        print(
+            "+"
+            + "-" * 21
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 8
+            + "+"
+            + "-" * 7
+            + "+"
+            + "-" * 51
+            + "+"
+        )
         for enemy in enemies_list:
-            print("| " + '{:20}'.format(enemy[0]) 
-                + "| " + '{:^7}'.format(enemy[5])
-                + "| " + '{:^7}'.format(enemy[1])
-                + "| " + '{:^7}'.format(enemy[2])
-                + "| " +'{:^6}'.format(enemy[3])
-                + "| " +'{:{}s}'.format(enemy[4], 50) + "|")
-            print("+" + "-"*21 
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" + "-"*8
-            + "+" +"-"*7
-            + "+" +"-"*51 + "+")
+            print(
+                "| "
+                + "{:20}".format(enemy[0])
+                + "| "
+                + "{:^7}".format(enemy[5])
+                + "| "
+                + "{:^7}".format(enemy[1])
+                + "| "
+                + "{:^7}".format(enemy[2])
+                + "| "
+                + "{:^6}".format(enemy[3])
+                + "| "
+                + "{:{}s}".format(enemy[4], 50)
+                + "|"
+            )
+            print(
+                "+"
+                + "-" * 21
+                + "+"
+                + "-" * 8
+                + "+"
+                + "-" * 8
+                + "+"
+                + "-" * 8
+                + "+"
+                + "-" * 7
+                + "+"
+                + "-" * 51
+                + "+"
+            )
         print("")
         input("Press any key to continue: ")
 
-
     def view_account_details(self, width):
         print("")
-        print('{:>{}s}'.format("High Score: ", width//2) + str(self.high_score))
-        print('{:>{}s}'.format("Times Played: ", width//2) + str(self.times_played))
-        print('{:>{}s}'.format("Times Won: ", width//2) + str(self.times_won))
+        print("{:>{}s}".format("High Score: ", width // 2) + str(self.high_score))
+        print("{:>{}s}".format("Times Played: ", width // 2) + str(self.times_played))
+        print("{:>{}s}".format("Times Won: ", width // 2) + str(self.times_won))
         print("")
         input("Press any key to continue: ")

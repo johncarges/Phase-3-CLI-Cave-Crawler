@@ -130,7 +130,7 @@ LINE_TYPES = ["-", "+", "*", "=", "~"]
 
 
 def print_line():
-    rand_line = LINE_TYPES[randint(0, 4)] * (WINDOW_WIDTH * 2)
+    rand_line = LINE_TYPES[randint(0, 4)] * ((WINDOW_WIDTH * 2) + 10)
     print("\n" + rand_line + "\n")
 
 
@@ -200,7 +200,7 @@ def slow_text(text, delay=0.03):
                 print(char, end="", flush=True)
                 time.sleep(delay)
             print()
-            time.sleep(0.5)
+            # time.sleep(0.5)
 
 
 if __name__ == "__main__":

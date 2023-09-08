@@ -121,12 +121,14 @@ enemy_print = {
 
 
 def chest_sword():
+    print()
     print(r"     /                     ")
     print(r" O===[====================-")
     print(r"     \                     ")
 
 
 def chest_potion():
+    print()
     print(r"  .-. ")
     print(r" .' `.")
     print(r" | + |")
@@ -134,6 +136,7 @@ def chest_potion():
 
 
 def chest_mist():
+    print()
     print(r" -_'-. _          ")
     print(r"-(    ) ),--.     ")
     print(r"             )-._ ")

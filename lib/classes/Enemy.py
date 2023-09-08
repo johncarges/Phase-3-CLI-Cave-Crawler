@@ -10,8 +10,8 @@ class Enemy:
         self.attack = attack
         self.description = description
 
-    def __repr__(self):
-        return f"Enemy {self.name}"
+    # def __repr__(self):
+    #     return f"Enemy {self.name}"
 
     @classmethod
     def create_from_db(cls, level):

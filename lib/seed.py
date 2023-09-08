@@ -28,15 +28,117 @@ def create_user_table():
     CURSOR.execute(sql)
 
 
+# this has everyone, but all stats start at 0
+# user_list = [
+#     {
+#         "username": "BreElle",
+#         "password": "isawesome",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {"username": "John", "password": "iscool", "high_score": 0, "times_played": 0, "times_won": 0},
+#     {
+#         "username": "Curtis",
+#         "password": "pearls",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {
+#         "username": "Teddy",
+#         "password": "thebear",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {
+#         "username": "Hiro",
+#         "password": "thegenius",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {
+#         "username": "Farhan",
+#         "password": "thebaker",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {
+#         "username": "Tess",
+#         "password": "thegreat",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+#     {
+#         "username": "Thomas",
+#         "password": "thewolf",
+#         "high_score": 0,
+#         "times_played": 0,
+#         "times_won": 0,
+#     },
+# ]
+
 user_list = [
     {
-        "username": "breelle",
+        "username": "BreElle",
         "password": "isawesome",
-        "high_score": 0,
-        "times_played": 0,
+        "high_score": 6,
+        "times_played": 9,
+        "times_won": 9,
+    },
+    {
+        "username": "John",
+        "password": "iscool",
+        "high_score": 6,
+        "times_played": 10,
+        "times_won": 10,
+    },
+    {
+        "username": "Curtis",
+        "password": "pearls",
+        "high_score": 2,
+        "times_played": 21,
         "times_won": 0,
     },
-    {"username": "john", "password": "iscool", "high_score": 0, "times_played": 0, "times_won": 0},
+    {
+        "username": "Teddy",
+        "password": "thebear",
+        "high_score": 6,
+        "times_played": 3,
+        "times_won": 2,
+    },
+    {
+        "username": "Hiro",
+        "password": "thegenius",
+        "high_score": 6,
+        "times_played": 4,
+        "times_won": 3,
+    },
+    {
+        "username": "Farhan",
+        "password": "thebaker",
+        "high_score": 6,
+        "times_played": 2,
+        "times_won": 2,
+    },
+    {
+        "username": "Tess",
+        "password": "thegreat",
+        "high_score": 6,
+        "times_played": 7,
+        "times_won": 4,
+    },
+    {
+        "username": "Thomas",
+        "password": "thewolf",
+        "high_score": 6,
+        "times_played": 3,
+        "times_won": 2,
+    },
 ]
 
 

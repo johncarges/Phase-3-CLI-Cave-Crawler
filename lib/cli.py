@@ -40,6 +40,7 @@ def print_cave_outline():
 
 
 def print_escape_art():
+    print()
     print(r"+----------------------------------------------------------------------------+")
     print(r"|  ` : | | | |:  ||  :     `  :  |  |+|: | : : :|   .        `              .|")
     print(r"|         .' ':  ||  |:  |  '       ` || | : | |: : |   .  `           .   :.|")
@@ -134,10 +135,6 @@ def view_log_in_menu():
 
     print_header(login_success_header)
     print(f"\nWelcome back, {account_info[1].upper()}!")
-    print(f"\nHigh Score: {account_info[3]}")
-    # add one to compensate for database not refreshing...
-    print(f"Times Played: {account_info[4] + 1}")
-    print(f"Times Won: {account_info[5]}")
 
     return current_user
 
@@ -164,7 +161,7 @@ def mainGame(current_user):
         if current_room.level != 0 or not current_room.first_time:
             print_line()
             print(
-                f"[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ] \n"
+                f"[ Level: {current_room.level} | Health: {player.health} | Attack: {player.attack} ]"
             )
 
         if current_room.level == VICTORY_LEVEL:

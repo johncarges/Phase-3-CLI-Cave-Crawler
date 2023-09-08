@@ -123,7 +123,7 @@ class Room:
         """
         if not self.enemy:
             self.enemy = Enemy.create_from_db(self.level)
-            print(f"New {self.enemy} created!")  # DEBUG
+            # print(f"New {self.enemy} created!")  # DEBUG
         if self.first_time:
             self.encounter = Encounter(user=user, enemy=self.enemy)
             self.first_time = False
@@ -215,6 +215,7 @@ class Room:
                     outcome = "previous"
                 else:
                     print("\nNot a valid input!")
+        print()
         input("Press any key to continue: ")
         return outcome  # could just be return "previous" ?
 

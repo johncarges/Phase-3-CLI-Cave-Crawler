@@ -5,6 +5,7 @@ from prints.print_formats import print_menu, battle_menu_dict, defeated_enemy_me
 from prints.print_enemy_art import enemy_print
 from helpers import WINDOW_WIDTH
 from random import randint
+import time
 
 user = User.sample_user()
 enemy = Enemy.create_from_db(level=10)
@@ -21,6 +22,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
     looping = True
     if enemy.is_dead():
         slow_text(f"You stand over the lifeless body of the {enemy.name}.")
+        time.sleep(1)
         while looping:
             choice = print_menu(defeated_enemy_menu_dict)
 
@@ -50,9 +52,11 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             if choice == "1":
                 print_out.append(f"You attack the {enemy.name}! You deal {player.attack} damage.")
                 enemy.health -= player.attack
+                # time.sleep(1)
                 if enemy.is_dead():
                     print_out.append(f"\nThe {enemy.name} is no more!")
                     enemy_defeated = True
+                    # time.sleep(1)
                     for item in print_out:
                         print(item)
                     return enemy_encounter(
@@ -63,6 +67,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                         f"\nThe {enemy.name} attacks you back for {enemy.attack} hearts!"
                     )
                     player.health -= enemy.attack
+                    # time.sleep(1)
                     if player.health <= 0:
                         outcome = "game over"
                         break
@@ -70,6 +75,7 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                 coin = randint(0, 1)
                 if coin == 0:
                     print_out.append(f"\nYou successfully snuck by the {enemy.name}!")
+                    # time.sleep(1)
                     input("Press any key to continue: ")
                     outcome = "straight"
                     break
@@ -78,11 +84,13 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
                         f"\nThe {enemy.name} sees you and attacks for {enemy.attack} hearts!"
                     )
                     player.health -= enemy.attack
+                    # time.sleep(1)
                     if player.health <= 0:
                         outcome = "game over"
                         break
             elif choice == "3":
                 print("\nYou decide to return to safety!")
+                # time.sleep(1)
                 outcome = "previous"
                 break
             elif choice == "x":
@@ -93,5 +101,5 @@ def enemy_encounter(user, player, enemy, room=None, enemy_defeated=False):
             for item in print_out:
                 print(item)
 
-    print(f"outcome: {outcome}")
+    # print(f"outcome: {outcome}")
     return (outcome, enemy_defeated)
